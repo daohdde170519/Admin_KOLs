@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/search_result.css}">
+</head>
+<body>
+    <h1>All Users</h1>
+    
+    <!-- Search Form -->
+    <form th:action="@{/admin/search-result}" method="get">
+        <div class="search-container">
+            <input type="text" id="search" name="keyword" placeholder="Search..." th:value="${keyword}">
+            <button type="submit">Search</button>
+        </div>
+    </form>
+    
+    <!-- Display Search Result -->
+    <table id="searchResultTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${userPage.content}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.gender}"></td>
+                <td th:text="${user.role}"></td>
+                <td>
+                    <button class="ban-unban-btn" 
+                            th:data-id="${user.id}" 
+                            th:data-action="${user.banAction == 'Ban' ? 'ban' : 'unban'}" 
+                            th:text="${user.banAction}">
+                    </button>
+                    
+                    <!-- Button to view -->
+                    <form th:action="@{'/admin/users/view/' + ${user.id}}" method="GET">
+                        <button type="submit">View</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <ul>
+            <li th:if="${userPage.number > 0}">
+                <a th:href="@{/admin/search-result(keyword=${keyword},page=${currentPage - 1})}">&laquo; Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(1, userPage.totalPages)}" th:if="${i != 0}">
+                <a th:href="@{/admin/search-result(keyword=${keyword},page=${i})}" th:text="${i}"></a>
+            </li>
+            <li th:if="${userPage.hasNext()}">
+                <a th:href="@{/admin/search-result(keyword=${keyword},page=${currentPage + 1})}">Next &raquo;</a>
+            </li>
+        </ul>
+    </div> 
+    <script th:src="@{/js/search_result.js}"></script>
+</body>
+</html>
