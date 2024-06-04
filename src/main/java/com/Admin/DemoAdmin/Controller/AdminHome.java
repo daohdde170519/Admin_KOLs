@@ -27,8 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author DAO
  */
-@RequestMapping("/admin/home")
+
 @Controller
+@RequestMapping("/admin/home")
 public class AdminHome {
 
     @Autowired
