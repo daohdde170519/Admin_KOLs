@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author DAO
  */
-
+@RequestMapping("/admin/home")
 @Controller
 public class AdminHome {
 
@@ -36,7 +36,7 @@ public class AdminHome {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/admin/home")
+    @GetMapping
     public String getAdminHome(Model model) {
         int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
         List<Integer> yearsWithPayment = transactionHistoryService.getYearsWithPayment();
@@ -50,7 +50,7 @@ public class AdminHome {
         return "chart/combined_home";
     }
 
-    @PostMapping("/admin/totalPaymentPerMonth")
+    @PostMapping("/totalPaymentPerMonth")
     public ResponseEntity<?> showTotalPaymentPerMonth(@RequestParam("year") int year) {
         List<Double> totalPayments = transactionHistoryService.getTotalPaymentPerMonth(year);
         Map<String, Object> responseData = new HashMap<>();
@@ -59,7 +59,7 @@ public class AdminHome {
         return ResponseEntity.ok(responseData);
     }
 
-    @PostMapping("/admin/userCountPerMonth")
+    @PostMapping("/userCountPerMonth")
     public ResponseEntity<?> showUserCountPerMonth(@RequestParam("year") int year) {
         List<Long> userCounts = userService.getUserCountByMonthAndYear(year);
         Map<String, Object> responseData = new HashMap<>();

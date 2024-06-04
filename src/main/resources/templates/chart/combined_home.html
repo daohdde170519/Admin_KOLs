@@ -122,7 +122,7 @@
 
             function loadPaymentChartData(year) {
                 $.ajax({
-                    url: "/admin/totalPaymentPerMonth",
+                    url: "/admin/home/totalPaymentPerMonth",
                     type: "POST",
                     data: { year: year },
                     success: function(response) {
@@ -172,7 +172,7 @@
 
             function loadUserChartData(year) {
                 $.ajax({
-                    url: "/admin/userCountPerMonth",
+                    url: "/admin/home/userCountPerMonth",
                     type: "POST",
                     data: { year: year },
                     success: function(response) {
