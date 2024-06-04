@@ -27,7 +27,7 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     public Page<Report> searchCategories(String keyword, Pageable pageable) {
-        return  reportRepository.searchCategories(keyword, pageable);
+        return  reportRepository.searchReports(keyword, pageable);
     }
     
 }

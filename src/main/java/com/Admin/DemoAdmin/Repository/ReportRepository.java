@@ -17,7 +17,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Integer> {
-    @Query("select r from Report r where r.reportId LIKE %?1% or c.description LIKE %?1%  or c.reason LIKE %?1% or c.createDate LIKE %?1% or c.reportUser LIKE %?1% or c.reportedUser LIKE %?1%")
-    Page<Report> searchCategories(String keyword, Pageable pageable);
+    @Query("SELECT r FROM Report r WHERE " +
+            "CAST(r.reportId AS string) LIKE %?1% OR " +
+            "r.description LIKE %?1% OR " +
+            "r.reason LIKE %?1% OR " +
+            "CAST(r.createDate AS string) LIKE %?1% OR " +
+            "r.reportUser.username LIKE %?1% OR " +
+            "r.reportedUser.username LIKE %?1%")
+    Page<Report> searchReports(String keyword, Pageable pageable);
 }
 
