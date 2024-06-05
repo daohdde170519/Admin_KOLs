@@ -1,0 +1,29 @@
+aside {
+    background-color: #343a40;
+    color: white;
+    width: 250px;
+    padding: 20px;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+aside nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside nav ul li {
+    margin: 10px 0;
+}
+
+aside nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+aside nav ul li a:hover {
+    background-color: #495057;
+}

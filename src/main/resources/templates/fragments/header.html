@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <h1>Admin Dashboard</h1>
+        </div>
+        <div class="header-right">
+            <div class="notifications">
+                <button>Notifications</button>
+                <!-- Add notification dropdown if needed -->
+            </div>
+            <div class="user-profile">
+                <img th:src="@{/image/edit_icon.png}" alt="Avatar">
+                <span>Admin</span>
+            </div>
+        </div>
+    </header>
+</body>
+</html>

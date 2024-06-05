@@ -4,9 +4,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Lặp qua từng nút và cập nhật trạng thái
     banUnbanButtons.forEach(button => {
+        // Kiểm tra xem trạng thái banAction có được lưu trong localStorage không
+        const userId = button.getAttribute('data-id');
+        const savedAction = localStorage.getItem(`banAction_${userId}`);
+        
+        // Nếu có, cập nhật lại nội dung của nút với trạng thái được lưu
+        if (savedAction) {
+            button.textContent = savedAction.charAt(0).toUpperCase() + savedAction.slice(1);
+            button.setAttribute('data-action', savedAction);
+        }
+
         // Lưu trữ trạng thái banAction ban đầu vào localStorage khi nhấn vào nút
         button.addEventListener('click', function() {
-            const userId = button.getAttribute('data-id');
             const action = button.getAttribute('data-action');
             const newAction = action === 'ban' ? 'unban' : 'ban';
             const endpoint = `/admin/users/${action}/${userId}`;
@@ -25,11 +34,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error('Error updating user status:', error);
                 });
         });
+    });
 
-        // Kiểm tra xem trang có được tải lại từ trang "view" không
-        // Nếu có, cập nhật lại trạng thái banAction và nội dung của nút
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
+    // Kiểm tra xem trang có được tải lại từ trang "view" không
+    // Nếu có, cập nhật lại trạng thái banAction và nội dung của nút
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            banUnbanButtons.forEach(button => {
                 const userId = button.getAttribute('data-id');
                 const initialAction = localStorage.getItem(`banAction_${userId}`); // Lấy lại trạng thái banAction ban đầu từ localStorage
 
@@ -37,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.textContent = initialAction.charAt(0).toUpperCase() + initialAction.slice(1); // Cập nhật lại nút với trạng thái banAction ban đầu
                     button.setAttribute('data-action', initialAction); // Cập nhật lại data attribute
                 }
-            }
-        });
+            });
+        }
     });
 });

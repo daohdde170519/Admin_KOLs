@@ -45,7 +45,7 @@ public class AdminListUsersController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", userPage.getTotalPages());
 
-        return "/users/listusers";
+        return "users/listusers";
     }
     
     //Hiển thị thông tin search theo phân trang
@@ -62,19 +62,9 @@ public class AdminListUsersController {
         model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("keyword", keyword);
 
-        return "/users/searchresult"; 
+        return "users/searchresult"; 
     }
 
-//    @GetMapping("/list_users/{pageNo}")
-//    public String usersPage(@PathVariable("page") int pageNo, Model model){
-//        Page<User> users = userService.pageUsers(pageNo);
-//     model.addAttribute("users", users);
-//     model.addAttribute("Title", users.getContent());
-//        model.addAttribute("currentPage", pageNo);
-//        model.addAttribute("size", users.getSize());
-//       model.addAttribute("totalPages", users.getTotalPages());
-//        return "listusers";
-//  }
     
     // BanAction
     @PostMapping("/users/ban/{id}")
@@ -107,11 +97,7 @@ public class AdminListUsersController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
     }
 
-//    @PostMapping("/users/delete/{id}")
-//    public String deleteUser(@PathVariable Integer id) {
-//        userService.deleteUserById(id);
-//        return "redirect:/admin/list_users";
-//    }
+
     // ViewAction
     @GetMapping("/users/view/{id}")
     public String viewUserProfile(@PathVariable Integer id, @RequestParam("page") Optional<Integer> page, Model model) {
@@ -128,3 +114,23 @@ public class AdminListUsersController {
         }
     }
 }
+
+
+
+//    @GetMapping("/list_users/{pageNo}")
+//    public String usersPage(@PathVariable("page") int pageNo, Model model){
+//        Page<User> users = userService.pageUsers(pageNo);
+//     model.addAttribute("users", users);
+//     model.addAttribute("Title", users.getContent());
+//        model.addAttribute("currentPage", pageNo);
+//        model.addAttribute("size", users.getSize());
+//       model.addAttribute("totalPages", users.getTotalPages());
+//        return "listusers";
+//  }
+
+
+//    @PostMapping("/users/delete/{id}")
+//    public String deleteUser(@PathVariable Integer id) {
+//        userService.deleteUserById(id);
+//        return "redirect:/admin/list_users";
+//    }
