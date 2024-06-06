@@ -45,7 +45,7 @@ public class AdminListUsersController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", userPage.getTotalPages());
 
-        return "users/listusers";
+        return "admin/users/listusers";
     }
     
     //Hiển thị thông tin search theo phân trang
@@ -62,7 +62,7 @@ public class AdminListUsersController {
         model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("keyword", keyword);
 
-        return "users/searchresult"; 
+        return "admin/users/searchresult"; 
     }
 
     
@@ -108,9 +108,9 @@ public class AdminListUsersController {
         if (userDTO != null && profileDTO != null) {
             model.addAttribute("profile", profileDTO);
             model.addAttribute("currentPage", currentPage); // Thêm currentPage vào model
-            return "/users/profile";
+            return "admin/users/profile";
         } else {
-            return "profile";
+            return "admin/users/profile";
         }
     }
 }

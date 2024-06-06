@@ -28,6 +28,6 @@ public class NotificationViewController {
     public String viewNotifications(Model model) {
         List<Notification> notifications = notificationService.getAllNotifications();
         model.addAttribute("notifications", notifications);
-        return "notification/notification";
+        return "admin/notification/notification";
     }
 }

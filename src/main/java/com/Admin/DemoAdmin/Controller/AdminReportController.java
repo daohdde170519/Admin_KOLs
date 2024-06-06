@@ -63,7 +63,7 @@ public class AdminReportController {
 
         model.addAttribute("reportPage", reportPage);
 
-        return "/report/list_reports";
+        return "admin/report/list_reports";
     }  
     
         @PostMapping("/sendNotification")

@@ -38,7 +38,7 @@ public class AdminCategoryController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", categoryPage.getTotalPages());
 
-        return "category/listcategories";
+        return "admin/category/listcategories";
     }
     
     
@@ -56,14 +56,14 @@ public class AdminCategoryController {
         model.addAttribute("totalPages", categoryPage.getTotalPages());
         model.addAttribute("keyword", keyword);
 
-        return "category/search_categoríes";
+        return "admin/category/search_categoríes";
     }
 
     @GetMapping("/new")
     public String showNewCategoryForm(Model model) {
         Category category = new Category();
         model.addAttribute("category", category);
-        return "/category/newcategory";
+        return "admin//category/newcategory";
     }
 
     @PostMapping
@@ -77,7 +77,7 @@ public class AdminCategoryController {
         Optional<Category> category = categoryService.getCategoryById(id);
         if (category.isPresent()) {
             model.addAttribute("category", category.get());
-            return "/category/editcategory";
+            return "admin/category/editcategory";
         } else {
             return "redirect:/admin/categories";
         }

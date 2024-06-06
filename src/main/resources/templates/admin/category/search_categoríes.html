@@ -12,6 +12,9 @@
 </head>
 <body>
     <h1>All Categories</h1>
+    <a href="/admin/categories/new" class="btn btn-info btn-mad">
+        <span class="glyphicon glyphicon-plus"></span> Add New Category 
+    </a>
     <form th:action="@{/admin/categories/search}" method="get">
         <div class="search-container">
             <input type="text" id="search" name="keyword" placeholder="Search..." th:value="${keyword}">
