@@ -26,6 +26,8 @@ public interface UserService {
     void deleteUserById(Integer id);
     Page<User> pageUsers(int pageNo);
     Page<UserDTO> searchUsers(String keyword, Pageable pageable);
+    Page<UserDTO> searchUsersWithBan(String keyword, Pageable pageable);
+    Page<UserDTO> searchUsersWithUnBan(String keyword, Pageable pageable);
     List<Long> getUserCountByMonthAndYear(int year);
     List<Integer> getYearsWithUsers();
 }

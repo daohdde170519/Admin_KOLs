@@ -53,8 +53,15 @@ public class AdminListUsersController {
     public String searchUsers(@RequestParam("keyword") String keyword, Model model, @RequestParam("page") Optional<Integer> page) {
         int currentPage = page.orElse(1);
         int pageSize = 10;
+        Page<UserDTO> userPage = null; // Khởi tạo userPage là null
 
-        Page<UserDTO> userPage = userService.searchUsers(keyword, PageRequest.of(currentPage - 1, pageSize));
+        if (keyword.toLowerCase().contains("unban")) {
+            userPage = userService.searchUsersWithBan(keyword, PageRequest.of(currentPage - 1, pageSize));
+        } else if (keyword.toLowerCase().contains("ban")) {
+            userPage = userService.searchUsersWithUnBan(keyword, PageRequest.of(currentPage - 1, pageSize));
+        } else {
+            userPage = userService.searchUsers(keyword, PageRequest.of(currentPage - 1, pageSize));
+        }
 
         model.addAttribute("userPage", userPage);
         model.addAttribute("users", userPage.getContent());
@@ -62,10 +69,10 @@ public class AdminListUsersController {
         model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("keyword", keyword);
 
-        return "admin/users/searchresult"; 
+        return "admin/users/searchresult";
     }
 
-    
+
     // BanAction
     @PostMapping("/users/ban/{id}")
     public ResponseEntity<String> banUser(@PathVariable Integer id) {

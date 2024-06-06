@@ -90,10 +90,20 @@ public class UserServiceImpl implements UserService {
         Page<User> userPage = userRepository.pageUser(pageable);
         return userPage;
     }
-
+    
     @Override
     public Page<UserDTO> searchUsers(String keyword, Pageable pageable) {
         return userRepository.searchUsers(keyword, pageable).map(userMapper::toUserDTO);
+    }
+
+    @Override
+    public Page<UserDTO> searchUsersWithBan(String keyword, Pageable pageable) {
+        return userRepository.searchUsersWithBan(keyword, pageable).map(userMapper::toUserDTO);
+    }
+    
+    @Override
+    public Page<UserDTO> searchUsersWithUnBan(String keyword, Pageable pageable) {
+        return userRepository.searchUsersWithUnBan(keyword, pageable).map(userMapper::toUserDTO);
     }
     
     @Override
