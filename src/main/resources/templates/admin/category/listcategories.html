@@ -5,11 +5,13 @@
     <title>Category List</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/list_categories.css}">
 <!--    bootstrap icon-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <div th:include="admin/admin-template/header :: adminHeader"></div>
     <h1>All Categories</h1>
     <a href="/admin/categories/new" class="btn btn-info btn-mad">
         <span class="glyphicon glyphicon-plus"></span> Add New Category 

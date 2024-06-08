@@ -5,6 +5,7 @@
     <title>Report List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
     <style>
         textarea.form-control {
     min-height: 50px;
@@ -14,6 +15,7 @@
     </style>
 </head>
 <body>
+    <div th:include="admin/admin-template/header :: adminHeader"></div>
     <div class="container mt-5">
         <h2>Report List</h2>
         <form th:action="@{/admin/reports}" method="get">

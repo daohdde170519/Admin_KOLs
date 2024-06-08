@@ -20,6 +20,6 @@ public class AdminController {
     @GetMapping("/dashboard")
     public String adminDashboard(Model model) {
         // Bạn có thể thêm các thuộc tính vào model nếu cần
-        return "layout/admin";
+        return "admin/admin-template/header";
     }
 }

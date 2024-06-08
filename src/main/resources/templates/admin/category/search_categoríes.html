@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--    bootstrap icon-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <div th:include="admin/admin-template/header :: adminHeader"></div>
     <h1>All Categories</h1>
     <a href="/admin/categories/new" class="btn btn-info btn-mad">
         <span class="glyphicon glyphicon-plus"></span> Add New Category 

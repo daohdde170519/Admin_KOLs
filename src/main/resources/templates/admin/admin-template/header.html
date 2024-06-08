@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Header</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+</head>
+<body>
+    <div class="function" th:fragment="adminHeader">
+        <div class="header">
+            <a th:href="@{/admin/home}" class="nav-link">Home</a>
+            <a th:href="@{/admin/categories}" class="nav-link">Category</a>
+            <a th:href="@{/admin/list_users}" class="nav-link">Account</a>
+            <a th:href="@{/admin/reports}" class="nav-link">Report</a>
+            <a th:href="@{/admin/contact}" class="nav-link">Contact</a>
+        </div>
+    </div>
+</body>
+</html>

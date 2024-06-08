@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>User Profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
     <style>
         /* CSS để thiết lập vị trí và kiểu dáng cho nút Back */
         .container {
@@ -26,6 +27,7 @@
     </style>
 </head>
 <body>
+    <div th:include="admin/admin-template/header :: adminHeader"></div>
     <div class="container">
         <h1>User Profile</h1>
         <div th:if="${profile == null}">

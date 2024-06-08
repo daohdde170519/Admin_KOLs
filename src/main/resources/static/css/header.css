@@ -1,44 +1,29 @@
-header {
-    background-color: #343a40;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* header_styles.css */
+.function {
     padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; 
 }
-
-.header-left h1 {
+body {
     margin: 0;
-    font-size: 1.5em;
+    font-family: Arial, sans-serif;
 }
-
-.header-right {
+.header {
+    background-color: #007bff;
+    overflow: hidden;
     display: flex;
-    align-items: center;
+    justify-content: center; /* căn giữa theo chiều ngang */
+    align-items: center; /* căn giữa theo chiều dọc */
 }
 
-.notifications {
-    margin-right: 20px;
+.header a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
 }
-
-.notifications button {
-    background-color: #495057;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-}
-
-.user-profile img {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+.header a:hover {
+    background-color: #ffffff;
 }
