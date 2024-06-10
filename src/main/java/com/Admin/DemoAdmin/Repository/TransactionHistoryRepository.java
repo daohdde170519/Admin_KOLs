@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionHistoryRepository extends JpaRepository<TransactionHistory, Integer> {
  List<TransactionHistory> findByTransDateBetween(Date startDate, Date endDate);
-    @Query("SELECT DISTINCT YEAR(th.transDate) FROM TransactionHistory th WHERE th.transPayment > 0 and th.requestStatus = 1")
+    @Query("SELECT DISTINCT YEAR(th.transDate) FROM TransactionHistory th WHERE th.transPayment > 0 and th.transtStatus = True")
     List<Integer> findYearsWithPayment();
 }

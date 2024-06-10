@@ -1,4 +1,4 @@
-/*
+        /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -44,6 +44,10 @@ public class Report {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reported_user")
     private User reportedUser;
+    
+    @ManyToOne
+    @JoinColumn(name = "comment_id", nullable = false)
+    private Comment reportedComment;
 
     // Getters and setters
 }

@@ -30,4 +30,11 @@ public class ReportServiceImpl implements ReportService{
         return  reportRepository.searchReports(keyword, pageable);
     }
     
+    @Override
+    public void deleteReportById(int reportId) {
+        if (reportRepository.existsById(reportId)) {
+            reportRepository.deleteById(reportId);
+        }
+    }
+    
 }

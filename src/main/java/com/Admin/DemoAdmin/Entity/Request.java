@@ -39,7 +39,7 @@ public class Request {
     private String requestDescription;
 
     @Column(name = "request_location", length = 80, nullable = false)
-    private String requestLocation;
+    private String requestLocation;   
 
     @Column(name = "payment", nullable = false)
     private double payment;
@@ -52,6 +52,9 @@ public class Request {
 
     @Column(name = "request_status")
     private boolean requestStatus;
+    
+    @Column(name = "req_type")
+    private boolean request_type;
 
     // Getters and setters
 }

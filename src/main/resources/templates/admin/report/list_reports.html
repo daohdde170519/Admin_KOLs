@@ -33,6 +33,7 @@
                     <th>Create Date</th>
                     <th>Report User</th>
                     <th>Reported User</th>
+                    <th>Comment</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -41,9 +42,10 @@
                     <td th:text="${report.reportId}"></td>
                     <td th:text="${report.description}"></td>
                     <td th:text="${report.reason}"></td>
-                    <td th:text="${#dates.format(report.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${#dates.format(report.createDate, 'yyyy-MM-dd HH:mm')}"></td>                    
                     <td th:text="${report.reportUser.username}"></td>
                     <td th:text="${report.reportedUser.username}"></td>
+                    <td th:text="${report.reportedComment.commentContent}"></td>
                     <td>
                         <form th:action="@{/admin/reports/sendNotification}" method="post" class="d-inline">
                             <input type="hidden" name="userId" th:value="${report.reportedUser.userId}" />
@@ -58,6 +60,10 @@
                             <button th:if="${!report.reportedUser.locked}" th:data-id="${report.reportedUser.userId}" class="btn btn-danger btn-ban">Ban</button>
                             <button th:if="${report.reportedUser.locked}" th:data-id="${report.reportedUser.userId}" class="btn btn-success btn-unban">Unban</button>
                         </div>
+                        <!-- Delete Report Button -->
+                        <form th:action="@{/admin/reports/delete/{id}(id=${report.reportId})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger">Delete Report</button>
+                        </form>
                     </td>
                 </tr>
             </tbody>

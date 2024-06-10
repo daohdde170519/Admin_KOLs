@@ -35,6 +35,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT COUNT(u), FUNCTION('MONTH', u.createdAt) FROM User u WHERE u.role = 'user' AND u.locked = false AND FUNCTION('YEAR', u.createdAt) = :year GROUP BY FUNCTION('MONTH', u.createdAt)")
     List<Object[]> findUserCountByMonthAndYear(int year);
     
-    @Query("SELECT DISTINCT FUNCTION('YEAR', u.createdAt) FROM User u WHERE u.role = 'user' AND u.locked = false ORDER BY FUNCTION('YEAR', u.createdAt)")
+    @Query("SELECT DISTINCT FUNCTION('YEAR', u.createdAt) FROM User u WHERE u.role = 'user' AND u.locked = False ORDER BY FUNCTION('YEAR', u.createdAt)")
     List<Integer> findYearsWithUsers();
 }

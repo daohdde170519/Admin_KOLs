@@ -8,6 +8,7 @@ package com.Admin.DemoAdmin.Entity;
  *
  * @author DAO
  */
+import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import java.util.Date;
 import lombok.AllArgsConstructor;
@@ -16,37 +17,32 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TRANSACTIONHISTORY")
+@Table(name = "Comment")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class TransactionHistory {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "trans_id")
-    private int transId;
+    private Integer commentId;
 
-    @Column(name = "trans_payment", nullable = false)
-    private double transPayment;
+    @Column(nullable = false)
+    private String commentContent;
 
-    @Column(name = "trans_time")
-    private Date transDate;
+    @ManyToOne
+    @JoinColumn(name = "commenter_id", nullable = false)
+    private User commenter;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
-    private User sender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "receiver_id")
     private User receiver;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id")
-    private Request request;
+    @Column(nullable = false)
+    private Date createdAt = new Date();
 
-    @Column(name = "trans_status")
-    private boolean transtStatus;
+    @Column(nullable = false)
+    private Boolean isViolation = false;
 
     // Getters and setters
 }

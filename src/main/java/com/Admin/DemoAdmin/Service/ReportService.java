@@ -17,4 +17,5 @@ import org.springframework.stereotype.Service;
 public interface ReportService {
     Page<Report> findPaginated(Pageable pageable);
     Page<Report> searchCategories(String keyword, Pageable pageable);
+    void deleteReportById(int reportId);
 }

@@ -8,10 +8,12 @@ package com.Admin.DemoAdmin.Service;
  *
  * @author DAO
  */
+import com.Admin.DemoAdmin.Entity.User;
 import com.Admin.DemoAdmin.Entity.UserNotification;
 import java.util.List;
 
 public interface UserNotificationService {
     UserNotification createUserNotification(UserNotification userNotification);
     List<UserNotification> getUserNotificationsByUserId(int userId);
+    void sendViolationNotification(User reportedUser, int violationLevel);
 }

@@ -49,7 +49,8 @@ public List<Double> getTotalPaymentPerMonth(int year) {
         List<TransactionHistory> transactions = transactionHistoryRepository.findByTransDateBetween(startDate, endDate);
         double totalPayment = 0.0;
         for (TransactionHistory transaction : transactions) {
-            totalPayment += transaction.getTransPayment();
+            if(transaction.isTranstStatus()){
+            totalPayment += transaction.getTransPayment();}
         }
         totalPayments.add(totalPayment);
     }
