@@ -105,7 +105,7 @@ public class AdminReportController {
     @GetMapping("/submit")
     public String showReportForm(Model model) {
         model.addAttribute("report", new Report());
-        return "hello";
+        return "reportForm";
     }
 
     @PostMapping("/submit1")
@@ -118,18 +118,18 @@ public class AdminReportController {
         Comment reportedComment = commentRepository.findById(report.getReportedComment().getCommentId()).orElse(null);
         if (reportedComment == null) {
             model.addAttribute("message", "Comment not found");
-            return "hello";
+            return "reportForm";
         }
 
         // Check for violation words
         int violationLevel = violationCheckService.checkCommentForViolations(reportedComment);
         if (violationLevel > 0) {
             violationCheckService.handleViolation(reportedComment, violationLevel, model);
-            return "hello";
+            return "reportForm";
         }
 
         model.addAttribute("message", "Report submitted, comment does not violate policy");
-        return "hello";
+        return "reportForm";
     }
     
     @PostMapping("/delete/{id}")

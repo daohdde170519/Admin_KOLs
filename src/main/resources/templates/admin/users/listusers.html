@@ -40,7 +40,7 @@
                 <td th:text="${user.role}"></td>
                 <td>
                     <!-- Only show ban/unban buttons for non-admin users -->
-                    <div th:if="${user.role != 'Admin'}">
+                    <div th:if="${user.role != 'admin'}">
                         <button class="ban-unban-btn" 
                                 th:data-id="${user.id}" 
                                 th:data-action="${user.banAction == 'Ban' ? 'ban' : 'unban'}" 
