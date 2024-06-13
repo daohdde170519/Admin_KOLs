@@ -23,5 +23,6 @@ public interface CategoryService {
     void deleteCategoryById(int id);
     Page<Category> findPaginated(Pageable pageable);
     Page<Category> searchCategories(String keyword, Pageable pageable);
+    boolean checkDuplicateCategory(Category category);
 }
 

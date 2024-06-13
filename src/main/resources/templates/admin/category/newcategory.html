@@ -17,5 +17,8 @@
         <input type="text" id="description" th:field="*{description}">
         <button type="submit">Save</button>
     </form>
+    <div th:if="${duplicateMessage != null}">
+        <p th:text="${duplicateMessage}" style="color: red;"></p>
+    </div>
 </body>
 </html>

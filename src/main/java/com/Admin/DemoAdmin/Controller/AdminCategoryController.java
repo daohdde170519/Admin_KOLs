@@ -63,11 +63,18 @@ public class AdminCategoryController {
     public String showNewCategoryForm(Model model) {
         Category category = new Category();
         model.addAttribute("category", category);
-        return "admin//category/newcategory";
+        return "admin/category/newcategory";
     }
 
     @PostMapping
-    public String saveCategory(@ModelAttribute("category") Category category) {
+    public String saveCategory(@ModelAttribute("category") Category category, Model model) {
+        boolean isDuplicate = categoryService.checkDuplicateCategory(category);
+
+        if (isDuplicate) {
+            model.addAttribute("duplicateMessage", "Category with the same name already exists!");
+            return "admin/category/newcategory"; 
+        }
+
         categoryService.saveCategory(category);
         return "redirect:/admin/categories";
     }
@@ -84,10 +91,24 @@ public class AdminCategoryController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateCategory(@PathVariable("id") int id, @ModelAttribute("category") Category category) {
-        category.setCategoryId(id);
-        categoryService.saveCategory(category);
-        return "redirect:/admin/categories";
+    public String updateCategory(@PathVariable("id") int id, @ModelAttribute("category") Category category, Model model) {
+        Optional<Category> existingCategory = categoryService.getCategoryById(id);
+        if (existingCategory.isPresent()) {
+            String existingCategoryName = existingCategory.get().getCategoryName();
+            if (!existingCategoryName.equals(category.getCategoryName())) {
+                boolean isDuplicate = categoryService.checkDuplicateCategory(category);
+                if (isDuplicate) {
+                    model.addAttribute("duplicateMessage", "Category with the same name already exists!");
+                    model.addAttribute("category", existingCategory.get());
+                    return "admin/category/editcategory"; 
+                }
+            }
+            category.setCategoryId(id);
+            categoryService.saveCategory(category);
+            return "redirect:/admin/categories";
+        } else {
+            return "redirect:/admin/categories";
+        }
     }
 
     @GetMapping("/delete/{id}")

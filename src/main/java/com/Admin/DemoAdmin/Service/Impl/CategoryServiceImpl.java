@@ -54,5 +54,18 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<Category> searchCategories(String keyword, Pageable pageable) {
        return categoryRepository.searchCategories(keyword, pageable);
     }
+    
+    @Override
+    public boolean checkDuplicateCategory(Category category) {
+        // Lấy danh sách các category từ cơ sở dữ liệu
+        List<Category> existingCategories = categoryRepository.findAll();
+
+        for (Category existingCategory : existingCategories) {
+            if (existingCategory.getCategoryName().equalsIgnoreCase(category.getCategoryName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
