@@ -41,13 +41,11 @@ public class TransactionHistory {
     @JoinColumn(name = "receiver_id")
     private User receiver;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id")
-    private Request request;
-
     @Column(name = "trans_status")
     private boolean transtStatus;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", referencedColumnName = "request_id")
+    private Request request;
     // Getters and setters
 }
-

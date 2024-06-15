@@ -15,25 +15,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "COMMENTVIOLATION")
+@Table(name = "RequestWaitList")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class CommentViolation{
+public class RequestWaitList {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer commentViolationId;
+    private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "comment_id", nullable = false)
-    private Comment comment;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", nullable = false)
+    private Request request;
 
-    @ManyToOne
-    @JoinColumn(name = "word_id", nullable = false)
-    private ViolationWord violationWord;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "responder_id", nullable = false)
+    private User responder;
 
-
-    // Getters and setters
+    // Other fields, getters, setters, constructors
 }
-

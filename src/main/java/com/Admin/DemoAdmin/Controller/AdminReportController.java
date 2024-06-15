@@ -15,6 +15,7 @@ import com.Admin.DemoAdmin.Service.ReportService;
 import com.Admin.DemoAdmin.Service.UserNotificationService;
 import com.Admin.DemoAdmin.Service.UserService;
 import com.Admin.DemoAdmin.Service.ViolationCheckService;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,16 +90,16 @@ public class AdminReportController {
     public String sendNotification(@RequestParam("userId") int userId, @RequestParam("message") String message) {
         // Tạo đối tượng Notification mới
         Notification notification = new Notification();
-        notification.setMessage(message);
-        notification.setNotificationDate(new Date());
+        notification.setContent(message);
+        notification.setCreateAt(ZonedDateTime.now());
 
         // Lưu thông báo
         Notification savedNotification = notificationService.createNotification(notification);
 
         // Gửi thông báo đến người dùng
         UserNotification userNotification = new UserNotification();
-        userNotification.setUserId(userId);
-        userNotification.setNotificationId(savedNotification.getNotificationId());
+        userNotification.setUser(userService.findById(userId));
+        userNotification.setNotification(savedNotification);
         userNotificationService.createUserNotification(userNotification);
 
         return "redirect:/admin/reports"; // Điều hướng lại trang danh sách báo cáo sau khi gửi thông báo

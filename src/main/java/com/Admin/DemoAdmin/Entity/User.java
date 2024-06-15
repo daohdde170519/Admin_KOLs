@@ -41,12 +41,20 @@ public class User {
     @Column(name = "is_locked")
     private boolean locked;
 
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @Column(name = "create_at")
+    private Date createAt;
 
     @Column(name = "what_role", length = 20, nullable = false)
     private String role;
 
-    // Getters and setters
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Profile profile;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createAt = new Date();
+    }
 }

@@ -7,9 +7,9 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
 </head>
 <body>
-    <div th:replace="admin/admin-template/sidebar :: sidebar"></div>
+    <div th:replace="~{admin/admin-template/sidebar :: sidebar}"></div>
     <div class="main-content">
-        <div th:include="${viewName}"></div>
+        <div th:insert="~{${viewName}}"></div>
     </div>
 </body>
 </html>

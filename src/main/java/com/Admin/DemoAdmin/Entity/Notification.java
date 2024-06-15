@@ -9,6 +9,7 @@ package com.Admin.DemoAdmin.Entity;
  * @author DAO
  */
 import jakarta.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,22 +17,33 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Notification")
-@NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "notification")
 public class Notification {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id")
-    private int notificationId;
+    private Long notificationId;
 
-    @Column(name = "notification_date")
-    private Date notificationDate;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private TypeNotification type;
 
-    @Column(name = "message", columnDefinition = "NVARCHAR(MAX)", nullable = false)
-    private String message;
+    @Column(name = "reference_id", nullable = true)
+    private String referenceId;
 
-    // Getters and setters
+    @Column(name = "content")
+    private String content;
+    
+    @Column(name = "createAt")
+    private ZonedDateTime createAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createAt = ZonedDateTime.now();
+    }
 }

@@ -11,7 +11,8 @@ package com.Admin.DemoAdmin.Service;
 import com.Admin.DemoAdmin.Entity.User;
 import com.Admin.DemoAdmin.Entity.UserNotification;
 import java.util.List;
-
+import org.springframework.stereotype.Service;
+@Service
 public interface UserNotificationService {
     UserNotification createUserNotification(UserNotification userNotification);
     List<UserNotification> getUserNotificationsByUserId(int userId);

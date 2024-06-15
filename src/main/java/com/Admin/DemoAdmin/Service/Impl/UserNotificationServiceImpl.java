@@ -15,6 +15,7 @@ import com.Admin.DemoAdmin.Repository.NotificationRepository;
 import com.Admin.DemoAdmin.Repository.UserNotificationRepository;
 import com.Admin.DemoAdmin.Repository.UserRepository;
 import com.Admin.DemoAdmin.Service.UserNotificationService;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,20 +37,20 @@ public class UserNotificationServiceImpl implements UserNotificationService {
 
     @Override
     public List<UserNotification> getUserNotificationsByUserId(int userId) {
-        return userNotificationRepository.findByUserId(userId);
+        return userNotificationRepository.findByUser_UserId(userId);
     }
 
     @Override
     public void sendViolationNotification(User reportedUser, int violationLevel) {
         String message = "Your comment has been marked as violating with a severity level of " + violationLevel;
         Notification notification = new Notification();
-        notification.setNotificationDate(new Date());
-        notification.setMessage(message);
+        notification.setCreateAt(ZonedDateTime.now());
+        notification.setContent(message);
         notificationRepository.save(notification);
 
         UserNotification userNotification = new UserNotification();
-        userNotification.setUserId(reportedUser.getUserId());
-        userNotification.setNotificationId(notification.getNotificationId());
+        userNotification.setUser(reportedUser);
+        userNotification.setNotification(notification);
         userNotificationRepository.save(userNotification);
     }
 }

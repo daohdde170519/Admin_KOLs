@@ -4,11 +4,8 @@
  */
 package com.Admin.DemoAdmin.Controller;
 
-import com.Admin.DemoAdmin.Entity.TransactionHistory;
 import com.Admin.DemoAdmin.Service.TransactionHistoryService;
 import com.Admin.DemoAdmin.Service.UserService;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
@@ -29,11 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("/admin/home")
 @Controller
-
 public class AdminHome {
 
     @Autowired
     private TransactionHistoryService transactionHistoryService;
+
     @Autowired
     private UserService userService;
 
@@ -48,7 +44,7 @@ public class AdminHome {
 
         model.addAttribute("years", years);
         model.addAttribute("currentYear", currentYear);
-                model.addAttribute("viewName", "admin/chart/combined_home");
+        model.addAttribute("viewName", "admin/chart/combined_home");
 
         return "admin-layout";
     }

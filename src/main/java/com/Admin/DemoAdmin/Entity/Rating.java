@@ -16,12 +16,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Reviews")
+@Table(name = "Rating")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class Review {
+public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rating_id")
@@ -38,13 +38,8 @@ public class Review {
     @Column(name = "rating_value", nullable = false)
     private int ratingValue;
 
-    @Column(name = "rating_comment", columnDefinition = "NVARCHAR(MAX)")
-    private String ratingComment;
-
     @Column(name = "rating_date")
     private Date ratingDate;
 
     // Getters and setters
 }
-
-

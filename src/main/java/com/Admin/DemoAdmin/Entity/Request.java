@@ -39,7 +39,7 @@ public class Request {
     private String requestDescription;
 
     @Column(name = "request_location", length = 80, nullable = false)
-    private String requestLocation;   
+    private String requestLocation;
 
     @Column(name = "payment", nullable = false)
     private double payment;
@@ -52,9 +52,16 @@ public class Request {
 
     @Column(name = "request_status")
     private boolean requestStatus;
-    
+
     @Column(name = "req_type")
     private boolean request_type;
 
+    @Column(name = "requester_confirm")
+    private boolean requesterConfirm;
+
+    @Column(name = "responer_confirm")
+    private boolean responderConfirm;
     // Getters and setters
+    @OneToOne(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private TransactionHistory transactionHistory;
 }

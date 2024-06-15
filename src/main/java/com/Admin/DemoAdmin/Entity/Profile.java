@@ -8,7 +8,6 @@ package com.Admin.DemoAdmin.Entity;
  *
  * @author DAO
  */
-
 import jakarta.persistence.*;
 import java.util.Date;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,7 @@ import lombok.Setter;
 public class Profile {
     @Id
     @Column(name = "user_id")
-    private int userId;
+    private int profile;
 
     @Column(name = "full_name", length = 100)
     private String fullName;
@@ -33,19 +32,21 @@ public class Profile {
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String bio;
 
-    @Lob
-    private byte[] avatar;
+    @Column(name = "avatar_url", length = 500)
+    private String avatarUrl;
 
+    @Column(name = "birthday")
     private Date birthday;
 
-    @Column(name = "phonenumber", length = 10)
+    @Column(name = "phonenumber", length = 15)
     private String phoneNumber;
 
     @Column(length = 50)
     private String address;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @MapsId
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
 
     // Getters and setters

@@ -8,8 +8,6 @@ package com.Admin.DemoAdmin.Entity;
  *
  * @author DAO
  */
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,24 +24,21 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_notifications")
-public class UserNotification {
+@NoArgsConstructor
+@Table(name = "user_conversation")
+public class UserConversation {
 
     @Id
-    @Column(name = "user_notifications_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", referencedColumnName = "userId", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "notificationId", referencedColumnName = "notification_id", insertable = false, updatable = false)
-    private Notification notification;
-
-    @Column(name = "is_read", nullable = false)
-    private boolean isRead = false;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "conversation_id", nullable = false)
+    private Conversation conversation;
 }
+

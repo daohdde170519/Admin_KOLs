@@ -12,13 +12,13 @@ public class ProfileMapper {
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
     public ProfileDTO toProfileDTO(User user, Profile profile) {
-        String createdAtString = user != null && user.getCreatedAt() != null ? dateFormatter.format(user.getCreatedAt()) : null;
+        String createdAtString = user != null && user.getCreateAt() != null ? dateFormatter.format(user.getCreateAt()) : null;
         String fullName = profile != null ? profile.getFullName() : null;
         String bio = profile != null ? profile.getBio() : null;
         String phoneNumber = profile != null ? profile.getPhoneNumber() : null;
         String address = profile != null ? profile.getAddress() : null;
         String birthdayString = profile != null && profile.getBirthday() != null ? dateFormatter.format(profile.getBirthday()) : null;
-        byte[] avatar = profile != null ? profile.getAvatar() : null;
+        String avatar = profile != null ? profile.getAvatarUrl() : null;
 
         return new ProfileDTO(
             user != null ? user.getUserId() : null,

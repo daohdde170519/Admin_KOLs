@@ -34,6 +34,6 @@ public class ProfileDTO {
     private String phoneNumber;
     private String address;
     private String birthday;
-     private byte[] avatar;
+     private String avatar;
 }
 

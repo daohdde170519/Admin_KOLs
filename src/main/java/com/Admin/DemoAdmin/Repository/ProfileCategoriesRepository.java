@@ -5,7 +5,6 @@
 package com.Admin.DemoAdmin.Repository;
 
 import com.Admin.DemoAdmin.Entity.ProfileCategories;
-import com.Admin.DemoAdmin.Entity.ProfileCategoryKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +13,5 @@ import org.springframework.stereotype.Repository;
  * @author DAO
  */
 @Repository
-public interface ProfileCategoriesRepository extends JpaRepository<ProfileCategories, ProfileCategoryKey> {}
+public interface ProfileCategoriesRepository extends JpaRepository<ProfileCategories, Integer> {
+}

@@ -32,9 +32,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User u where u.email LIKE %?1% or u.username LIKE %?1% or u.gender LIKE %?1% or u.role LIKE %?1% or u.locked = false")
     Page<User> searchUsersWithUnBan(String keyword, Pageable pageable);
     
-    @Query("SELECT COUNT(u), FUNCTION('MONTH', u.createdAt) FROM User u WHERE u.role = 'user' AND u.locked = false AND FUNCTION('YEAR', u.createdAt) = :year GROUP BY FUNCTION('MONTH', u.createdAt)")
+    @Query("SELECT COUNT(u), FUNCTION('MONTH', u.createAt) FROM User u WHERE u.locked = false AND u.role <> 'Admin' AND FUNCTION('YEAR', u.createAt) = :year GROUP BY FUNCTION('MONTH', u.createAt)")
     List<Object[]> findUserCountByMonthAndYear(int year);
-    
-    @Query("SELECT DISTINCT FUNCTION('YEAR', u.createdAt) FROM User u WHERE u.role = 'user' AND u.locked = False ORDER BY FUNCTION('YEAR', u.createdAt)")
+  
+    @Query("SELECT DISTINCT FUNCTION('YEAR', u.createAt) FROM User u WHERE u.locked = false AND u.role <> 'Admin' ORDER BY FUNCTION('YEAR', u.createAt)")
     List<Integer> findYearsWithUsers();
 }

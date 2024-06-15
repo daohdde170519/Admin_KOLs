@@ -52,8 +52,7 @@ public class ViolationCheckServiceImpl implements ViolationCheckService {
 
                 CommentViolation commentViolation = new CommentViolation();
                 commentViolation.setComment(comment);
-                commentViolation.setViolationWord(violationWord);
-                commentViolation.setViolationLevel(violationWord.getViolationLevel());
+                commentViolation.setViolationWord(violationWord);               
                 commentViolationRepository.save(commentViolation);
             }
         }
@@ -80,13 +79,6 @@ public class ViolationCheckServiceImpl implements ViolationCheckService {
                 userRepository.save(reportedUser);
                 userNotificationService.sendViolationNotification(reportedUser, violationLevel);
                 model.addAttribute("message", "Comment contains violating words and user account has been temporarily locked.");
-                break;
-            case 3:
-                // Permanently lock the account and delete the comment
-                reportedUser.setLocked(true);
-                userRepository.save(reportedUser);
-                userNotificationService.sendViolationNotification(reportedUser, violationLevel);
-                model.addAttribute("message", "Comment contains violating words and user account has been permanently locked and comment deleted.");
                 break;
             default:
                 model.addAttribute("message", "Unknown violation level.");
