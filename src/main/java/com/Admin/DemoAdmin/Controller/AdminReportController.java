@@ -80,7 +80,9 @@ public class AdminReportController {
 
         model.addAttribute("reportPage", reportPage);
 
-        return "admin/report/list_reports";
+        model.addAttribute("viewName", "admin/report/list_reports");
+
+        return "admin-layout";
     }  
     
         @PostMapping("/sendNotification")

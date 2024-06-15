@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Layout</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+</head>
+<body>
+    <div th:replace="admin/admin-template/sidebar :: sidebar"></div>
+    <div class="main-content">
+        <div th:include="${viewName}"></div>
+    </div>
+</body>
+</html>

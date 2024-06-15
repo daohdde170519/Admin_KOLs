@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.Admin.DemoAdmin.Controller;
 
-/**
- *
- * @author DAO
- */
 import com.Admin.DemoAdmin.Entity.Category;
 import com.Admin.DemoAdmin.Service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,44 +18,55 @@ public class AdminCategoryController {
 
     @Autowired
     private CategoryService categoryService;
-
+    
     @GetMapping
-    public String listCategories(Model model, @RequestParam("page") Optional<Integer> page) {
+    public String listCategories(Model model, 
+                                 @RequestParam("page") Optional<Integer> page,
+                                 @RequestParam(value = "keyword", required = false) String keyword) {
         int currentPage = page.orElse(1);
         int pageSize = 10;
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<Category> categoryPage = categoryService.findPaginated(pageable);
+
+        Page<Category> categoryPage;
+        if (keyword != null && !keyword.isEmpty()) {
+            categoryPage = categoryService.searchCategories(keyword, pageable);
+            model.addAttribute("keyword", keyword);
+        } else {
+            categoryPage = categoryService.findPaginated(pageable);
+        }
 
         model.addAttribute("categoryPage", categoryPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", categoryPage.getTotalPages());
+        model.addAttribute("viewName", "admin/category/listcategories");
 
-        return "admin/category/listcategories";
+        return "admin-layout";
     }
-    
-    
-    @GetMapping("/search")
-    public String searchCategories(@RequestParam("keyword") String keyword,
-            @RequestParam("page") Optional<Integer> page,
-            Model model) {
-        int currentPage = page.orElse(1);
-        int pageSize = 10;
-        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<Category> categoryPage = categoryService.searchCategories(keyword, pageable);
 
-        model.addAttribute("categoryPage", categoryPage);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", categoryPage.getTotalPages());
-        model.addAttribute("keyword", keyword);
-
-        return "admin/category/search_categoríes";
-    }
+//    @GetMapping("/search")
+//    public String searchCategories(@RequestParam("keyword") String keyword,
+//                                   @RequestParam("page") Optional<Integer> page,
+//                                   Model model) {
+//        int currentPage = page.orElse(1);
+//        int pageSize = 10;
+//        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+//        Page<Category> categoryPage = categoryService.searchCategories(keyword, pageable);
+//
+//        model.addAttribute("categoryPage", categoryPage);
+//        model.addAttribute("currentPage", currentPage);
+//        model.addAttribute("totalPages", categoryPage.getTotalPages());
+//        model.addAttribute("keyword", keyword);
+//        model.addAttribute("viewName", "admin/category/search_categories");
+//
+//        return "admin-layout";
+//    }
 
     @GetMapping("/new")
     public String showNewCategoryForm(Model model) {
         Category category = new Category();
         model.addAttribute("category", category);
-        return "admin/category/newcategory";
+        model.addAttribute("viewName", "admin/category/newcategory");
+        return "admin-layout";
     }
 
     @PostMapping
@@ -72,7 +75,8 @@ public class AdminCategoryController {
 
         if (isDuplicate) {
             model.addAttribute("duplicateMessage", "Category with the same name already exists!");
-            return "admin/category/newcategory"; 
+            model.addAttribute("viewName", "admin/category/newcategory");
+            return "admin-layout";
         }
 
         categoryService.saveCategory(category);
@@ -84,7 +88,8 @@ public class AdminCategoryController {
         Optional<Category> category = categoryService.getCategoryById(id);
         if (category.isPresent()) {
             model.addAttribute("category", category.get());
-            return "admin/category/editcategory";
+            model.addAttribute("viewName", "admin/category/editcategory");
+            return "admin-layout";
         } else {
             return "redirect:/admin/categories";
         }
@@ -100,7 +105,8 @@ public class AdminCategoryController {
                 if (isDuplicate) {
                     model.addAttribute("duplicateMessage", "Category with the same name already exists!");
                     model.addAttribute("category", existingCategory.get());
-                    return "admin/category/editcategory"; 
+                    model.addAttribute("viewName", "admin/category/editcategory");
+                    return "admin-layout";
                 }
             }
             category.setCategoryId(id);

@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <title>User List</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/search_result.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
 </head>
 <body>
     
-    <div th:include="admin/admin-template/header :: adminHeader"></div>
     <h1>All Users</h1>
     
     <!-- Search Form -->
-    <form th:action="@{/admin/search-result}" method="get">
+    <form th:action="@{/admin/list_users}" method="get">
         <div class="search-container">
             <input type="text" id="search" name="keyword" placeholder="Search..." th:value="${keyword}">
             <button type="submit">Search</button>
@@ -20,6 +18,7 @@
     </form>
     
     <!-- Display Search Result -->
+    <div class="table-container">
     <table id="searchResultTable">
         <thead>
             <tr>
@@ -56,21 +55,24 @@
             </tr>
         </tbody>
     </table>
-    
+    </div>
     <!-- Pagination Controls -->
     <div class="pagination">
         <ul>
-            <li th:if="${userPage.number > 0}">
-                <a th:href="@{/admin/search-result(keyword=${keyword},page=${currentPage - 1})}">&laquo; Previous</a>
+            <!-- Previous Page Link -->
+            <li th:if="${currentPage > 1}">
+                <a th:href="@{/admin/list_users(page=${currentPage - 1}, keyword=${keyword})}">&laquo; Previous</a>
             </li>
-            <li th:each="i : ${#numbers.sequence(1, userPage.totalPages)}" th:if="${i != 0}">
-                <a th:href="@{/admin/search-result(keyword=${keyword},page=${i})}" th:text="${i}"></a>
+            <!-- Page Number Links -->
+            <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:if="${i != 0}">
+                <a th:href="@{/admin/list_users(page=${i}, keyword=${keyword})}" th:text="${i}"></a>
             </li>
-            <li th:if="${userPage.hasNext()}">
-                <a th:href="@{/admin/search-result(keyword=${keyword},page=${currentPage + 1})}">Next &raquo;</a>
+            <!-- Next Page Link -->
+            <li th:if="${currentPage < totalPages}">
+                <a th:href="@{/admin/list_users(page=${currentPage + 1}, keyword=${keyword})}">Next &raquo;</a>
             </li>
         </ul>
-    </div> 
+    </div>
     <script th:src="@{/js/search_result.js}"></script>
 </body>
 </html>

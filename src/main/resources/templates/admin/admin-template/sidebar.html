@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}">
+    <title>Sidebar</title>
+</head>
+<body>
+    <div th:fragment="sidebar" class="sidebar">
+        <div class="logo">
+            <a href="/" class="simple-text logo-normal">
+                KOLs
+            </a>
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/home}">
+                    <p>Home</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/categories}">
+                    <p>Categories</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/list_users}">
+                    <p>Account</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/reports}">
+                    <p>Report</p>
+                </a>
+            </li>
+            <li class="nav-item logout">
+                <a class="nav-link" th:href="@{/logout}">
+                    <p>Logout</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

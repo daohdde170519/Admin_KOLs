@@ -48,7 +48,9 @@ public class AdminHome {
 
         model.addAttribute("years", years);
         model.addAttribute("currentYear", currentYear);
-        return "admin/chart/combined_home";
+                model.addAttribute("viewName", "admin/chart/combined_home");
+
+        return "admin-layout";
     }
 
     @PostMapping("/totalPaymentPerMonth")

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @GetMapping("/dashboard")
+    @GetMapping("/sidebar")
     public String adminDashboard(Model model) {
         // Bạn có thể thêm các thuộc tính vào model nếu cần
-        return "admin/admin-template/header";
+        return "admin/admin-template/sidebar";
     }
 }

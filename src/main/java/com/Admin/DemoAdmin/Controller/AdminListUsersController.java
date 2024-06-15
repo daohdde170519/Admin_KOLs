@@ -34,43 +34,59 @@ public class AdminListUsersController {
     
     // Hiển thị Danh sách theo phân trang
     @GetMapping("/list_users")
-    public String listUsers(Model model, @RequestParam("page") Optional<Integer> page) {
+    public String listUsers(Model model,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam(value = "keyword", required = false) String keyword) {
         int currentPage = page.orElse(1);
         int pageSize = 10;
+        Page<UserDTO> userPage;
 
-        Page<UserDTO> userPage = userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-
-        model.addAttribute("userPage", userPage);
-        model.addAttribute("users", userPage.getContent());
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", userPage.getTotalPages());
-
-        return "admin/users/listusers";
-    }
-    
-    //Hiển thị thông tin search theo phân trang
-    @GetMapping("/search-result")
-    public String searchUsers(@RequestParam("keyword") String keyword, Model model, @RequestParam("page") Optional<Integer> page) {
-        int currentPage = page.orElse(1);
-        int pageSize = 10;
-        Page<UserDTO> userPage = null; // Khởi tạo userPage là null
-
-        if (keyword.toLowerCase().contains("unban")) {
-            userPage = userService.searchUsersWithBan(keyword, PageRequest.of(currentPage - 1, pageSize));
-        } else if (keyword.toLowerCase().contains("ban")) {
-            userPage = userService.searchUsersWithUnBan(keyword, PageRequest.of(currentPage - 1, pageSize));
+        if (keyword != null && !keyword.isEmpty()) {
+            if (keyword.toLowerCase().contains("unban")) {
+                userPage = userService.searchUsersWithBan(keyword, PageRequest.of(currentPage - 1, pageSize));
+            } else if (keyword.toLowerCase().contains("ban")) {
+                userPage = userService.searchUsersWithUnBan(keyword, PageRequest.of(currentPage - 1, pageSize));
+            } else {
+                userPage = userService.searchUsers(keyword, PageRequest.of(currentPage - 1, pageSize));
+            }
+            model.addAttribute("keyword", keyword);
         } else {
-            userPage = userService.searchUsers(keyword, PageRequest.of(currentPage - 1, pageSize));
+            userPage = userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         }
 
         model.addAttribute("userPage", userPage);
         model.addAttribute("users", userPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", userPage.getTotalPages());
-        model.addAttribute("keyword", keyword);
+        model.addAttribute("viewName", "admin/users/listusers");
 
-        return "admin/users/searchresult";
+        return "admin-layout";
     }
+
+    
+//    //Hiển thị thông tin search theo phân trang
+//    @GetMapping("/search-result")
+//    public String searchUsers(@RequestParam("keyword") String keyword, Model model, @RequestParam("page") Optional<Integer> page) {
+//        int currentPage = page.orElse(1);
+//        int pageSize = 10;
+//        Page<UserDTO> userPage = null; // Khởi tạo userPage là null
+//
+//        if (keyword.toLowerCase().contains("unban")) {
+//            userPage = userService.searchUsersWithBan(keyword, PageRequest.of(currentPage - 1, pageSize));
+//        } else if (keyword.toLowerCase().contains("ban")) {
+//            userPage = userService.searchUsersWithUnBan(keyword, PageRequest.of(currentPage - 1, pageSize));
+//        } else {
+//            userPage = userService.searchUsers(keyword, PageRequest.of(currentPage - 1, pageSize));
+//        }
+//
+//        model.addAttribute("userPage", userPage);
+//        model.addAttribute("users", userPage.getContent());
+//        model.addAttribute("currentPage", currentPage);
+//        model.addAttribute("totalPages", userPage.getTotalPages());
+//        model.addAttribute("keyword", keyword);
+//
+//        return "admin/users/searchresult";
+//    }
 
 
     // BanAction

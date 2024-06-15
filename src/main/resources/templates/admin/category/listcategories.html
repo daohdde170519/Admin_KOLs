@@ -3,62 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Category List</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/list_categories.css}">
-<!--    bootstrap icon-->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/list_categories.css}">
 </head>
 <body>
-    <div th:include="admin/admin-template/header :: adminHeader"></div>
     <h1>All Categories</h1>
     <a href="/admin/categories/new" class="btn btn-info btn-mad">
-        <span class="glyphicon glyphicon-plus"></span> Add New Category 
+        <span class="glyphicon glyphicon-plus"></span> Add New Category
     </a>
-    <form th:action="@{/admin/categories/search}" method="get">
+    <form th:action="@{/admin/categories}" method="get">
         <div class="search-container">
-            <input type="text" id="search" name="keyword" placeholder="Search...">
+            <input type="text" id="search" name="keyword" th:attr="placeholder='Search...'" th:value="${keyword}">
             <button type="submit">Search</button>
         </div>
     </form>
-    <table id="categoryTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="category : ${categoryPage.content}">
-                <td th:text="${category.categoryId}"></td>
-                <td th:text="${category.categoryName}"></td>
-                <td th:text="${category.description}"></td>
-                <td>
-                    <a th:href="@{'/admin/categories/edit/' + ${category.categoryId}}" class="btn btn-info btn-sm">
-                        <span class="glyphicon glyphicon-edit"></span> Edit
-                    </a>
-                    |
-                    <a th:href="@{'/admin/categories/delete/' + ${category.categoryId}}" class="btn btn-info btn-sm">
-                        <span class="glyphicon glyphicon-trash"></span> Delete 
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <!-- Pagination Controls -->
+    <div class="table-container">
+        <table id="categoryTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="category : ${categoryPage.content}">
+                    <td th:text="${category.categoryId}"></td>
+                    <td th:text="${category.categoryName}"></td>
+                    <td th:text="${category.description}"></td>
+                    <td>
+                        <a th:href="@{'/admin/categories/edit/' + ${category.categoryId}}" class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-edit"></span> Edit
+                        </a>
+                        |
+                        <a th:href="@{'/admin/categories/delete/' + ${category.categoryId}}" class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-trash"></span> Delete
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="pagination">
         <ul>
             <li th:if="${currentPage > 1}">
-                <a th:href="@{'/admin/categories?page=' + ${currentPage - 1}}">&laquo; Previous</a>
+                <a th:href="@{'/admin/categories?keyword=' + ${keyword != null ? keyword : ''} + '&amp;page=' + ${currentPage - 1}}">&laquo; Previous</a>
             </li>
-            <li th:each="i : ${#numbers.sequence(1, totalPages)}">
-                <a th:href="@{'/admin/categories?page=' + ${i}}" th:text="${i}"></a>
+            <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:if="${i != 0}">
+                <a th:href="@{'/admin/categories?keyword=' + ${keyword != null ? keyword : ''} + '&amp;page=' + ${i}}" th:text="${i}"></a>
             </li>
             <li th:if="${currentPage < totalPages}">
-                <a th:href="@{'/admin/categories?page=' + ${currentPage + 1}}">Next &raquo;</a>
+                <a th:href="@{'/admin/categories?keyword=' + ${keyword != null ? keyword : ''} + '&amp;page=' + ${currentPage + 1}}">Next &raquo;</a>
             </li>
         </ul>
     </div>
