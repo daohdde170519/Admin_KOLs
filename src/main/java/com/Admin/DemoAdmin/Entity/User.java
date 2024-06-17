@@ -36,7 +36,7 @@ public class User {
     private String email;
 
     @Column(length = 6, nullable = false)
-    private String gender;
+    private Gender gender;
 
     @Column(name = "is_locked")
     private boolean locked;

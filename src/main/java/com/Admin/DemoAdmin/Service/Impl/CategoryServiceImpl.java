@@ -57,7 +57,6 @@ public class CategoryServiceImpl implements CategoryService {
     
     @Override
     public boolean checkDuplicateCategory(Category category) {
-        // Lấy danh sách các category từ cơ sở dữ liệu
         List<Category> existingCategories = categoryRepository.findAll();
 
         for (Category existingCategory : existingCategories) {

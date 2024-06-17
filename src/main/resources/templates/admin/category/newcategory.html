@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
 </head>
 <body>
-    <div th:include="admin/admin-template/header :: adminHeader"></div>
     
     <h1>New Category</h1>
     <form th:action="@{/admin/categories}" th:object="${category}" method="post">

@@ -2,6 +2,7 @@ package com.Admin.DemoAdmin.Controller;
 
 import com.Admin.DemoAdmin.DTOs.UserDTO;
 import com.Admin.DemoAdmin.DTOs.ProfileDTO;
+import com.Admin.DemoAdmin.Entity.Gender;
 import com.Admin.DemoAdmin.Entity.User;
 import com.Admin.DemoAdmin.Service.UserService;
 import com.Admin.DemoAdmin.Service.ProfileService;
@@ -42,12 +43,26 @@ public class AdminListUsersController {
         Page<UserDTO> userPage;
 
         if (keyword != null && !keyword.isEmpty()) {
+            Gender gender = null;
+
+            // Check if keyword contains specific filter keywords
             if (keyword.toLowerCase().contains("unban")) {
-                userPage = userService.searchUsersWithBan(keyword, PageRequest.of(currentPage - 1, pageSize));
+                keyword = keyword.replace("unban", "").trim(); // Remove 'unban' keyword
+                gender = Gender.MALE; // Set gender to filter with unban users (example)
+                userPage = userService.searchUsersWithUnBan(keyword, gender, PageRequest.of(currentPage - 1, pageSize));
             } else if (keyword.toLowerCase().contains("ban")) {
-                userPage = userService.searchUsersWithUnBan(keyword, PageRequest.of(currentPage - 1, pageSize));
+                keyword = keyword.replace("ban", "").trim(); // Remove 'ban' keyword
+                gender = Gender.FEMALE; // Set gender to filter with ban users (example)
+                userPage = userService.searchUsersWithBan(keyword, gender, PageRequest.of(currentPage - 1, pageSize));
             } else {
-                userPage = userService.searchUsers(keyword, PageRequest.of(currentPage - 1, pageSize));
+                // Check if keyword is directly a gender value
+                try {
+                    gender = Gender.valueOf(keyword.toUpperCase());
+                    userPage = userService.searchUsers(keyword, gender, PageRequest.of(currentPage - 1, pageSize));
+                } catch (IllegalArgumentException e) {
+                    // If not a valid enum value, treat it as a regular search keyword
+                    userPage = userService.searchUsers(keyword, null, PageRequest.of(currentPage - 1, pageSize));
+                }
             }
             model.addAttribute("keyword", keyword);
         } else {
@@ -62,6 +77,8 @@ public class AdminListUsersController {
 
         return "admin-layout";
     }
+
+
 
     
 //    //Hiển thị thông tin search theo phân trang

@@ -9,6 +9,7 @@ package com.Admin.DemoAdmin.Service;
  * @author DAO
  */
 import com.Admin.DemoAdmin.DTOs.UserDTO;
+import com.Admin.DemoAdmin.Entity.Gender;
 import com.Admin.DemoAdmin.Entity.User;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -25,10 +26,12 @@ public interface UserService {
     UserDTO getUserDTOById(Integer userId);
     void deleteUserById(Integer id);
     Page<User> pageUsers(int pageNo);
-    Page<UserDTO> searchUsers(String keyword, Pageable pageable);
-    Page<UserDTO> searchUsersWithBan(String keyword, Pageable pageable);
-    Page<UserDTO> searchUsersWithUnBan(String keyword, Pageable pageable);
+    Page<UserDTO> searchUsers(String keyword, Gender gender, Pageable pageable);
+    Page<UserDTO> searchUsersWithBan(String keyword, Gender gender, Pageable pageable);
+    Page<UserDTO> searchUsersWithUnBan(String keyword, Gender gender, Pageable pageable);
     List<Long> getUserCountByMonthAndYear(int year);
     List<Integer> getYearsWithUsers();
+    boolean existsByEmail(String email);
+    boolean existsByUsername(String username);
 }
 

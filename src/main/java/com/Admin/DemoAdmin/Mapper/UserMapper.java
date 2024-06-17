@@ -24,7 +24,7 @@ public class UserMapper {
             user.getUserId(),
             user.getUsername(),
             user.getEmail(),
-            user.getGender(),
+            user.getGender().toString(),
             user.getRole(),
             banAction,
             viewAction

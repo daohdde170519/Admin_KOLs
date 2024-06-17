@@ -5,6 +5,7 @@
 package com.Admin.DemoAdmin.Service.Impl;
 
 import com.Admin.DemoAdmin.DTOs.UserDTO;
+import com.Admin.DemoAdmin.Entity.Gender;
 import com.Admin.DemoAdmin.Entity.User;
 import com.Admin.DemoAdmin.Mapper.UserMapper;
 import com.Admin.DemoAdmin.Repository.UserRepository;
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setId(user.getUserId());
         userDTO.setName(user.getUsername());
         userDTO.setEmail(user.getEmail());
-        userDTO.setGender(user.getGender());
+        userDTO.setGender(user.getGender().toString());
         userDTO.setRole(user.getRole());
         // Add more fields as needed
         return userDTO;
@@ -92,18 +93,18 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public Page<UserDTO> searchUsers(String keyword, Pageable pageable) {
-        return userRepository.searchUsers(keyword, pageable).map(userMapper::toUserDTO);
+    public Page<UserDTO> searchUsers(String keyword, Gender gender, Pageable pageable) {
+         return userRepository.searchUsers(keyword, gender, pageable).map(userMapper::toUserDTO);
     }
 
     @Override
-    public Page<UserDTO> searchUsersWithBan(String keyword, Pageable pageable) {
-        return userRepository.searchUsersWithBan(keyword, pageable).map(userMapper::toUserDTO);
+    public Page<UserDTO> searchUsersWithBan(String keyword, Gender gender, Pageable pageable) {
+        return userRepository.searchUsersWithBan(keyword, gender, pageable).map(userMapper::toUserDTO);
     }
     
     @Override
-    public Page<UserDTO> searchUsersWithUnBan(String keyword, Pageable pageable) {
-        return userRepository.searchUsersWithUnBan(keyword, pageable).map(userMapper::toUserDTO);
+    public Page<UserDTO> searchUsersWithUnBan(String keyword, Gender gender, Pageable pageable) {
+        return userRepository.searchUsersWithUnBan(keyword, gender, pageable).map(userMapper::toUserDTO);
     }
     
     @Override
@@ -125,5 +126,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Integer> getYearsWithUsers() {
         return userRepository.findYearsWithUsers();
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+    
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 }

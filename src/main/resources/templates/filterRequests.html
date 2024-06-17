@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter Requests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 50%;
+            margin: 0 auto;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select,
+        input[type="date"] {
+            width: 200px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        h3 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Filter Requests</h2>
+
+    <!-- Form để nhập các thông tin lọc -->
+    <form action="#" th:action="@{/requests/filter}" th:object="${filter}" method="post">
+        <label for="minPayment">Min Payment:</label>
+        <input type="number" id="minPayment" name="minPayment" th:field="*{minPayment}"><br><br>
+
+        <label for="maxPayment">Max Payment:</label>
+        <input type="number" id="maxPayment" name="maxPayment" th:field="*{maxPayment}"><br><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" th:field="*{location}"><br><br>
+
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" th:field="*{startDate}"><br><br>
+
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" th:field="*{endDate}"><br><br>
+
+        <label for="categoryId">Category:</label>
+        <select id="categoryId" name="categoryID" th:field="*{categoryID}">
+            <option value="">-- Select Category --</option>
+            <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+        </select><br><br>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <br><br>
+
+    <!-- Hiển thị kết quả lọc -->
+    <h3>Filtered Usernames:</h3>
+    <ul>
+        <!-- Duyệt và hiển thị từng username -->
+        <li th:each="username : ${usernames}" th:text="${username}"></li>
+    </ul>
+</body>
+</html>

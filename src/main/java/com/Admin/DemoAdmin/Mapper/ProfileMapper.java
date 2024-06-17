@@ -24,7 +24,7 @@ public class ProfileMapper {
             user != null ? user.getUserId() : null,
             user != null ? user.getUsername() : null,
             user != null ? user.getEmail() : null,
-            user != null ? user.getGender() : null,
+            user != null ? user.getGender().toString() : null,
             user != null ? user.getRole() : null,
             createdAtString,
             user != null ? user.isLocked() ? "Unban" : "Ban" : null,

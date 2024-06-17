@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>KOL List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">KOL List</h1>
+        <form th:action="@{/admin/createAccounts}" method="post">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Select</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Categories</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Pictures</th>
+                        <th scope="col">Actions</th> <!-- Thêm cột Actions cho nút xóa -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="kol : ${kolRegistrations}">
+                        <td><input type="checkbox" name="kolIds" th:value="${kol.id}" /></td>
+                        <td th:text="${kol.name}"></td>
+                        <td th:text="${kol.email}"></td>
+                        <td th:text="${#strings.arrayJoin(kol.categories.split(','), ', ')}"></td>
+                        <td th:text="${kol.description}"></td>
+                        <td>
+                            <!-- Hiển thị nhiều ảnh từ danh sách imageUrlsList của mỗi KolRegistration -->
+                            <div th:each="imageUrl : ${kol.imageUrlsList}">
+                                <img th:src="@{${imageUrl.trim()}}" alt="Image" style="max-width: 100px; max-height: 100px; margin-right: 5px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <!-- Form xóa, gửi yêu cầu xóa đến endpoint /admin/deleteKol -->
+                            <form th:action="@{/admin/deleteKol}" method="post">
+                                <input type="hidden" name="kolId" th:value="${kol.id}" />
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary">Create Accounts</button>
+        </form>
+        <div th:if="${message}" class="alert alert-success mt-4" th:text="${message}"></div>
+        <div th:if="${messageError}" class="alert alert-danger mt-4" th:text="${messageError}"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
