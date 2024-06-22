@@ -5,6 +5,7 @@
 package com.Admin.DemoAdmin.Service.Impl;
 
 
+import com.Admin.DemoAdmin.Entity.User;
 import com.Admin.DemoAdmin.Repository.RequestRepository;
 import com.Admin.DemoAdmin.Service.RequestService;
 import java.util.Date;
@@ -19,12 +20,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RequestServiceImpl implements RequestService {
 
-    @Autowired
-    private RequestRepository requestRepository;
-
-    @Override
-    public List<String> getUsernamesByFilters(Double minPayment, Double maxPayment, String location,
-                                              Date startDate, Date endDate, Integer categoryId) {
-        return requestRepository.findUsernamesByFilters(minPayment, maxPayment, location, startDate, endDate, categoryId);
-    }
+//    @Autowired
+//    private RequestRepository requestRepository;
+//
+//    @Override
+//    public List<User> getUsernamesByFilters(Double minPayment, Double maxPayment, String location, Date startDate, Date endDate, Integer categoryId, Double minRating) {
+//        return requestRepository.findUsernamesByFilters(minPayment, maxPayment, location, startDate, endDate, categoryId, minRating);
+//    }
 }

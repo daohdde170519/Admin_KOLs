@@ -25,7 +25,7 @@ public class ViolationWord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer wordId;
 
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "NVARCHAR(MAX)")
     private String word;
 
     @Column(nullable = false)

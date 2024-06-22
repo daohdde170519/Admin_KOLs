@@ -15,11 +15,24 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ProfileService {
-    Profile findById(Integer userId);
-    List<Profile> findAll();
-    Profile save(Profile profile);
-    void deleteById(Integer userId);
-    ProfileDTO getUserProfile(Integer userId);
-    void deleteProfileByUserId(Integer id);
-}
 
+    Profile findById(Integer userId);
+
+    List<Profile> findAll();
+
+    Profile save(Profile profile);
+
+    void deleteById(Integer userId);
+
+    ProfileDTO getUserProfile(Integer userId);
+
+    void deleteProfileByUserId(Integer id);
+
+    List<Profile> findByFilters(Double averageRating, String fullName, String username,
+            String location, Long priceAPost, Long priceAToHireADay,
+            Long priceAVideo, Long representativePrice, String categoryName);
+
+    List<String> findCategoryNamesByProfileId(int profileId);
+    
+    void setCategoryNamesForProfiles(List<Profile> profiles);
+}

@@ -4,9 +4,9 @@
  */
 package com.Admin.DemoAdmin.Service;
 
-import com.Admin.DemoAdmin.Entity.User;
-import java.util.Date;
+import com.Admin.DemoAdmin.DTOs.ProfileRatingDTO;
 import java.util.List;
+import java.util.OptionalDouble;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
  * @author DAO
  */
 @Service
-public interface RequestService {
-//List<User> getUsernamesByFilters(Double minPayment, Double maxPayment, String location, Date startDate, Date endDate, Integer categoryId, Double minRating);
+public interface RatingService {
+    List<Integer> findRatingValuesByRequesterId(Integer requesterId);
+    OptionalDouble calculateAverageRating(Integer requesterId);
 }

@@ -95,6 +95,9 @@
             <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
         </select><br><br>
 
+        <label for="minRating">Min Rating:</label>
+        <input type="number" id="minRating" name="minRating" th:field="*{minRating}" step="0.1"><br><br>
+
         <button type="submit">Filter</button>
     </form>
 
@@ -104,7 +107,7 @@
     <h3>Filtered Usernames:</h3>
     <ul>
         <!-- Duyệt và hiển thị từng username -->
-        <li th:each="username : ${usernames}" th:text="${username}"></li>
+        <li th:each="user : ${user}" th:text="${user.username}"></li>
     </ul>
 </body>
 </html>

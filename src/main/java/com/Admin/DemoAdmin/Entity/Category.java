@@ -26,7 +26,7 @@ public class Category {
     @Column(name = "category_id")
     private int categoryId;
 
-    @Column(name = "category_name", length = 100, nullable = false)
+    @Column(name = "category_name", length = 100, nullable = false, columnDefinition = "NVARCHAR(MAX)")
     private String categoryName;
 
     @Column(name = "Description", columnDefinition = "NVARCHAR(255)")

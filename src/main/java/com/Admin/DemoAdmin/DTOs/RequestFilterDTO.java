@@ -27,5 +27,6 @@ public class RequestFilterDTO {
     private Double minPayment;
     private Double maxPayment;
     private Integer categoryID;
+    private Double minRating;
 }
 
