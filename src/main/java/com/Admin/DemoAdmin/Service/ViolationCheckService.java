@@ -5,13 +5,11 @@
 package com.Admin.DemoAdmin.Service;
 
 import com.Admin.DemoAdmin.Entity.Comment;
-import org.springframework.ui.Model;
 
 /**
  *
  * @author DAO
  */
 public interface ViolationCheckService {
-    int checkCommentForViolations(Comment comment);
-    void handleViolation(Comment reportedComment, int violationLevel, Model model);
+void checkCommentForViolations(Comment comment);
 }

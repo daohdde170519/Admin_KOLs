@@ -38,9 +38,13 @@ public class Notification {
 
     @Column(name = "content")
     private String content;
-    
-    @Column(name = "createAt")
+
+    @Column(name = "create_at")
     private ZonedDateTime createAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @PrePersist
     protected void onCreate() {

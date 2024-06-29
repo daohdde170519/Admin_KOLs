@@ -7,12 +7,11 @@ package com.Admin.DemoAdmin.Controller;
 import com.Admin.DemoAdmin.Entity.Comment;
 import com.Admin.DemoAdmin.Entity.Notification;
 import com.Admin.DemoAdmin.Entity.Report;
-import com.Admin.DemoAdmin.Entity.UserNotification;
+import com.Admin.DemoAdmin.Entity.TypeNotification;
 import com.Admin.DemoAdmin.Repository.CommentRepository;
 import com.Admin.DemoAdmin.Repository.ReportRepository;
 import com.Admin.DemoAdmin.Service.NotificationService;
 import com.Admin.DemoAdmin.Service.ReportService;
-import com.Admin.DemoAdmin.Service.UserNotificationService;
 import com.Admin.DemoAdmin.Service.UserService;
 import com.Admin.DemoAdmin.Service.ViolationCheckService;
 import java.time.ZonedDateTime;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -45,9 +43,6 @@ public class AdminReportController {
 
     @Autowired
     private UserService userService;
-    
-    @Autowired
-    private UserNotificationService userNotificationService;
     
     @Autowired
     private NotificationService notificationService;
@@ -90,18 +85,12 @@ public class AdminReportController {
     public String sendNotification(@RequestParam("userId") int userId, @RequestParam("message") String message) {
         // Tạo đối tượng Notification mới
         Notification notification = new Notification();
+        notification.setUser(userService.findById(userId));
         notification.setContent(message);
         notification.setCreateAt(ZonedDateTime.now());
-
+        notification.setType(TypeNotification.ACCOUNT);
         // Lưu thông báo
-        Notification savedNotification = notificationService.createNotification(notification);
-
-        // Gửi thông báo đến người dùng
-        UserNotification userNotification = new UserNotification();
-        userNotification.setUser(userService.findById(userId));
-        userNotification.setNotification(savedNotification);
-        userNotificationService.createUserNotification(userNotification);
-
+         notificationService.createNotification(notification);
         return "redirect:/admin/reports"; // Điều hướng lại trang danh sách báo cáo sau khi gửi thông báo
     }
     
@@ -125,13 +114,7 @@ public class AdminReportController {
         }
 
         // Check for violation words
-        int violationLevel = violationCheckService.checkCommentForViolations(reportedComment);
-        if (violationLevel > 0) {
-            violationCheckService.handleViolation(reportedComment, violationLevel, model);
-            return "reportForm";
-        }
-
-        model.addAttribute("message", "Report submitted, comment does not violate policy");
+        violationCheckService.checkCommentForViolations(reportedComment);
         return "reportForm";
     }
     
