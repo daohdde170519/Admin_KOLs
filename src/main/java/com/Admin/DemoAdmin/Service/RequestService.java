@@ -4,6 +4,7 @@
  */
 package com.Admin.DemoAdmin.Service;
 
+import com.Admin.DemoAdmin.Entity.Request;
 import com.Admin.DemoAdmin.Entity.User;
 import java.util.Date;
 import java.util.List;
@@ -15,5 +16,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface RequestService {
-//List<User> getUsernamesByFilters(Double minPayment, Double maxPayment, String location, Date startDate, Date endDate, Integer categoryId, Double minRating);
+     List<Request> getFilteredRequests(List<String> requestTypes, String requestLocation);
 }

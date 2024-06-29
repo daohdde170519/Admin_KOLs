@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile List</title>
+</head>
+<body>
+    <h1>Profile List</h1>
+    <ul>
+        <li th:each="profile : ${profiles}">
+            <a th:href="@{/profiles/{id}(id=${profile.profileId})}" th:text="${profile.fullName}"></a>
+        </li>
+    </ul>
+</body>
+</html>

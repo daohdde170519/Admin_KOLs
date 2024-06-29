@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile Details</title>
+</head>
+<body>
+    <h1>Profile Details</h1>
+    <p><strong>Full Name:</strong> <span th:text="${profile.fullName}"></span></p>
+    <p><strong>Bio:</strong></p>
+    <pre th:text="${profile.bio}"></pre>
+    <p><strong>Avatar URL:</strong> <span th:text="${profile.avatarUrl}"></span></p>
+    <p><strong>Birthday:</strong> <span th:text="${#dates.format(profile.birthday, 'yyyy-MM-dd')}"></span></p>
+    <p><strong>Phone Number:</strong> <span th:text="${profile.phoneNumber}"></span></p>
+    <p><strong>Address:</strong> <span th:text="${profile.address}"></span></p>
+    <p><strong>Location:</strong> <span th:text="${profile.location}"></span></p>
+    <p><strong>Price A Post:</strong> <span th:text="${profile.priceAPost}"></span></p>
+    <p><strong>Price A Video:</strong> <span th:text="${profile.priceAVideo}"></span></p>
+    <p><strong>Price To Hire A Day:</strong> <span th:text="${profile.priceAToHireADay}"></span></p>
+    <p><strong>Representative Price:</strong> <span th:text="${profile.representativePrice}"></span></p>
+    <p><strong>Average Rating:</strong> <span th:text="${profile.averageRating}"></span></p>
+    <p><strong>Money:</strong> <span th:text="${profile.money}"></span></p>
+    <p><strong>Category Names:</strong> <span th:text="${profile.categoryNames}"></span></p>
+</body>
+</html>

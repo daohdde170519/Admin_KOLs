@@ -7,16 +7,26 @@ package com.Admin.DemoAdmin.Controller;
 import com.Admin.DemoAdmin.DTOs.ProfileFilterDTO;
 import com.Admin.DemoAdmin.Entity.Category;
 import com.Admin.DemoAdmin.Entity.Profile;
+import com.Admin.DemoAdmin.Entity.User;
 import com.Admin.DemoAdmin.Service.CategoryService;
 import com.Admin.DemoAdmin.Service.ProfileService;
+import com.Admin.DemoAdmin.Service.UserService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -25,7 +35,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/profiles")
 public class ProfileController {
-
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
     @Autowired
     private ProfileService profileService;
 
@@ -78,6 +92,35 @@ public class ProfileController {
         // Trả về view để hiển thị kết quả
         return "filter_profiles";
     }
+        // Phương thức GET để hiển thị form tạo mới profile
+    @GetMapping("/new")
+    public String createProfileForm(Model model) {
+        model.addAttribute("profile", new Profile());
+        return "profile-form";
+    }
+
+    @PostMapping("/save")
+    public String createProfile(@ModelAttribute Profile profile) {
+        profile.setProfileId(11);
+        profileService.save(profile);
+        return "redirect:/profiles";
+    }
+    // Phương thức GET để lấy profile theo ID
+    @GetMapping("/{id}")
+    public String getProfileById(@PathVariable int id, Model model) {
+        Profile profile = profileService.findById(id);
+        model.addAttribute("profile", profile);
+        return "profile-details";
+    }
+
+    // Phương thức GET để lấy tất cả các profile
+    @GetMapping("/list")
+    public String getAllProfiles(Model model) {
+        List<Profile> profiles = profileService.findAll();
+        model.addAttribute("profiles", profiles);
+        return "profile-list";
+    }
+    
 }
 //@Controller
 //public class ProfileController {

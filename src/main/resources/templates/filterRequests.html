@@ -2,57 +2,54 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Filter Requests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtered Requests</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            padding: 20px;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 0;
         }
 
-        h2 {
-            color: #333;
+        h1 {
+            margin-bottom: 20px;
         }
 
         form {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 20px;
-            width: 50%;
-            margin: 0 auto;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         label {
             display: inline-block;
-            width: 120px;
-            font-weight: bold;
+            width: 150px;
+            margin-bottom: 10px;
         }
 
         input[type="number"],
         input[type="text"],
-        select,
-        input[type="date"] {
-            width: 200px;
+        select {
+            width: 250px;
             padding: 8px;
-            margin-bottom: 10px;
+            font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            box-sizing: border-box;
+            margin-bottom: 10px;
         }
 
         button[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
             padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
 
         button[type="submit"]:hover {
-            background-color: #45a049;
+            background-color: #0056b3;
         }
 
         ul {
@@ -61,53 +58,123 @@
         }
 
         li {
-            margin-bottom: 5px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        h3 {
-            color: #333;
+        li strong {
+            display: inline-block;
+            width: 200px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h2>Filter Requests</h2>
+    <h1>Filtered Requests</h1>
 
-    <!-- Form để nhập các thông tin lọc -->
-    <form action="#" th:action="@{/requests/filter}" th:object="${filter}" method="post">
-        <label for="minPayment">Min Payment:</label>
-        <input type="number" id="minPayment" name="minPayment" th:field="*{minPayment}"><br><br>
-
-        <label for="maxPayment">Max Payment:</label>
-        <input type="number" id="maxPayment" name="maxPayment" th:field="*{maxPayment}"><br><br>
-
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" th:field="*{location}"><br><br>
-
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" name="startDate" th:field="*{startDate}"><br><br>
-
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" name="endDate" th:field="*{endDate}"><br><br>
-
-        <label for="categoryId">Category:</label>
-        <select id="categoryId" name="categoryID" th:field="*{categoryID}">
-            <option value="">-- Select Category --</option>
-            <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+    <form th:action="@{/filtered-requests}" method="get" onsubmit="saveSelections()">
+        <label for="requestTypes">Request Types:</label>
+        <select id="requestTypes" name="requestTypes">
+            <option value="">All</option>
+            <option value="POST">POST</option>
+            <option value="VIDEO">VIDEO</option>
+            <option value="HIREBYDAY">HIREBYDAY</option>
+            <option value="REPRESENTATIVE">REPRESENTATIVE</option>
         </select><br><br>
 
-        <label for="minRating">Min Rating:</label>
-        <input type="number" id="minRating" name="minRating" th:field="*{minRating}" step="0.1"><br><br>
-
+        <label for="requestLocation">Request Location:</label>      
+        <select id="requestLocation" name="requestLocation" onchange="saveSelectedLocation()">
+            <option value="">Select location...</option>
+        </select><br><br>
         <button type="submit">Filter</button>
     </form>
 
-    <br><br>
-
-    <!-- Hiển thị kết quả lọc -->
-    <h3>Filtered Usernames:</h3>
+    <h2>Filtered Results:</h2>
     <ul>
-        <!-- Duyệt và hiển thị từng username -->
-        <li th:each="user : ${user}" th:text="${user.username}"></li>
+        <li th:each="request : ${requests}">
+            <strong>ID:</strong> <span th:text="${request.requestId}"></span><br>
+
+            <strong>Description:</strong> <span th:text="${request.requestDescription}"></span><br>
+            <strong>Location:</strong> <span th:text="${request.requestLocation}"></span><br>
+            <strong>Payment:</strong> <span th:text="${request.payment}"></span><br>
+            <strong>Start Date:</strong> <span th:text="${request.requestDate}"></span><br>
+            <strong>End Date:</strong> <span th:text="${request.requestDateEnd}"></span><br>
+            <strong>Status:</strong> <span th:text="${request.requestStatus}"></span><br>
+            <strong>Public:</strong> <span th:text="${request.public ? 'Yes' : 'No'}"></span><br>
+            <strong>Request Type:</strong> <span th:text="${request.requestType}"></span><br>
+            <strong>Days Requested:</strong>
+            <ul>
+                <li th:each="day : ${request.daysRequest}">
+                    <span th:text="${day}"></span>
+                </li>
+            </ul>
+        </li>
     </ul>
+
+    <script th:inline="javascript">
+        // Function to fetch locations from backend API
+        async function fetchLocations() {
+            try {
+                const response = await fetch('https://esgoo.net/api-tinhthanh/1/0.htm');
+                const data = await response.json();
+                return data.data; // Return the data from API
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+                return [];
+            }
+        }
+
+        // Function to populate locations dropdown
+        async function populateLocationsDropdown() {
+            const locations = await fetchLocations();
+            const locationDropdown = document.getElementById('requestLocation');
+
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location.name;
+                option.textContent = location.name;
+                locationDropdown.appendChild(option);
+            });
+
+            // Restore selected location from local storage
+            const selectedLocation = localStorage.getItem('selectedLocation');
+            if (selectedLocation) {
+                locationDropdown.value = selectedLocation;
+            }
+        }
+
+        // Save selected location to local storage
+        function saveSelectedLocation() {
+            const selectedLocation = document.getElementById('requestLocation').value;
+            localStorage.setItem('selectedLocation', selectedLocation);
+        }
+
+        // Save selected request types to local storage
+        function saveSelectedRequestTypes() {
+            const requestTypes = document.getElementById('requestTypes').value;
+            localStorage.setItem('requestTypes', requestTypes);
+        }
+
+        // Save selections to local storage
+        function saveSelections() {
+            saveSelectedLocation();
+            saveSelectedRequestTypes();
+        }
+
+        // Restore selected request types from local storage
+        function restoreSelectedRequestTypes() {
+            const selectedRequestTypes = localStorage.getItem('requestTypes');
+            if (selectedRequestTypes) {
+                document.getElementById('requestTypes').value = selectedRequestTypes;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            populateLocationsDropdown();
+            restoreSelectedRequestTypes();
+        });
+    </script>
 </body>
 </html>
