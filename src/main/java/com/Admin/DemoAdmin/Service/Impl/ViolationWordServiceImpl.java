@@ -8,6 +8,7 @@ import com.Admin.DemoAdmin.Entity.ViolationWord;
 import com.Admin.DemoAdmin.Repository.ViolationWordRepository;
 import com.Admin.DemoAdmin.Service.ViolationWordService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +25,8 @@ public class ViolationWordServiceImpl implements ViolationWordService {
     private ViolationWordRepository violationWordRepository;
 
     @Override
-    public ViolationWord findById(int id) {
-        return violationWordRepository.findById(id).orElse(null);
+    public Optional<ViolationWord> findById(int id) {
+        return violationWordRepository.findById(id);
     }
 
     @Override

@@ -10,6 +10,7 @@ package com.Admin.DemoAdmin.Controller;
  */    
 import com.Admin.DemoAdmin.Entity.ViolationWord;
 import com.Admin.DemoAdmin.Service.ViolationWordService;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("admin/violationWords")
@@ -46,7 +48,8 @@ public class AdminViolationWordController {
     }
 
     @PostMapping("/save")
-    public String saveViolationWord(@ModelAttribute("violationWord") ViolationWord violationWord, Model model) {
+    public String saveViolationWord(@ModelAttribute("violationWord") ViolationWord violationWord, Model model,
+                               RedirectAttributes redirectAttributes) {
         String result = violationWordService.saveViolationWord(violationWord);
         if ("Duplicate violation word".equals(result)) {
             model.addAttribute("violationWord", violationWord);
@@ -58,12 +61,13 @@ public class AdminViolationWordController {
             }
             return "admin-layout";
         }
+        redirectAttributes.addFlashAttribute("notification", "Violation Word added/edited successfully!");
         return "redirect:/admin/violationWords";
     }
 
     @GetMapping("/edit/{id}")
     public String editViolationWord(@PathVariable("id") Integer id, Model model) {
-        ViolationWord violationWord = violationWordService.findById(id);
+        Optional<ViolationWord> violationWord = violationWordService.findById(id);
         model.addAttribute("violationWord", violationWord);
         
         model.addAttribute("viewName", "admin/ViolationWords/editForm");
@@ -71,8 +75,9 @@ public class AdminViolationWordController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteViolationWord(@PathVariable("id") Integer id) {
+    public String deleteViolationWord(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         violationWordService.deleteById(id);
+        redirectAttributes.addFlashAttribute("notification", "Category deleted successfully!");
         return "redirect:/admin/violationWords";
     }
 }

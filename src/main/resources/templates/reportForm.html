@@ -1,25 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Submit Report</title>
-    </head>
-    <body>
-        <h1>Submit Report</h1>
-        <form th:action="@{/admin/reports/submit1}" th:object="${report}" method="post">
-            <label for="description">Description:</label>
-            <input type="text" id="description" th:field="*{description}" name="description"><br><br>
-            <label for="reason">Reason:</label>
-            <textarea id="reason" th:field="*{reason}" name="reason"></textarea><br><br>
-            <label for="reportUser">Report User ID:</label>
-            <input type="number" id="reportUser" th:field="*{reportUser.userId}" name="reportUser"><br><br>
-            <label for="reportedUser">Reported User ID:</label>
-            <input type="number" id="reportedUser" th:field="*{reportedUser.userId}" name="reportedUser"><br><br>
-            <label for="reportedComment">Reported Comment ID:</label>
-            <input type="number" id="reportedComment" th:field="*{reportedComment.commentId}" name="reportedComment"><br><br>
-            <button type="submit">Submit Report</button>
-        </form>
-        <p th:text="${message}"></p>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Report</title>
+</head>
+<body>
+    <h1>Submit Report</h1>
+    <form th:action="@{/admin/reports/submit1}" th:object="${report}" method="post">
+        <label for="description">Description:</label>
+        <input type="text" id="description" th:field="*{description}" name="description" required><br><br>
+
+        <label for="reason">Reason:</label>
+        <select id="reason" th:field="*{reason}" name="reason" required>
+            <option value="Offensive comments">Offensive comments</option>
+            <option value="Comments inciting violence">Comments inciting violence</option>
+            <option value="Comments against the government">Comments against the government</option>
+            <option value="Spam or misleading information">Spam or misleading information</option>
+            <option value="Hate speech">Hate speech</option>
+            <option value="Harassment or bullying">Harassment or bullying</option>
+            <option value="Promoting illegal activities">Promoting illegal activities</option>
+            <option value="Misinformation or fake news">Misinformation or fake news</option>
+            <option value="Graphic or violent content">Graphic or violent content</option>
+        </select><br><br>
+
+        <label for="reportUser">Report User ID:</label>
+        <input type="number" id="reportUser" th:field="*{reportUser.userId}" name="reportUser" required><br><br>
+
+        <label for="reportedUser">Reported User ID:</label>
+        <input type="number" id="reportedUser" th:field="*{reportedUser.userId}" name="reportedUser" required><br><br>
+
+        <label for="reportedComment">Reported Comment ID (optional):</label>
+        <input type="number" id="reportedComment" th:field="*{reportedComment.commentId}" name="reportedComment"><br><br>
+
+        <button type="submit">Submit Report</button>
+    </form>
+</body>
 </html>

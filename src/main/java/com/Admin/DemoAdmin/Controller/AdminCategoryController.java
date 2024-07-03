@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -18,9 +19,9 @@ public class AdminCategoryController {
 
     @Autowired
     private CategoryService categoryService;
-    
+
     @GetMapping
-    public String listCategories(Model model, 
+    public String listCategories(Model model,
                                  @RequestParam("page") Optional<Integer> page,
                                  @RequestParam(value = "keyword", required = false) String keyword) {
         int currentPage = page.orElse(1);
@@ -43,24 +44,6 @@ public class AdminCategoryController {
         return "admin-layout";
     }
 
-//    @GetMapping("/search")
-//    public String searchCategories(@RequestParam("keyword") String keyword,
-//                                   @RequestParam("page") Optional<Integer> page,
-//                                   Model model) {
-//        int currentPage = page.orElse(1);
-//        int pageSize = 10;
-//        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-//        Page<Category> categoryPage = categoryService.searchCategories(keyword, pageable);
-//
-//        model.addAttribute("categoryPage", categoryPage);
-//        model.addAttribute("currentPage", currentPage);
-//        model.addAttribute("totalPages", categoryPage.getTotalPages());
-//        model.addAttribute("keyword", keyword);
-//        model.addAttribute("viewName", "admin/category/search_categories");
-//
-//        return "admin-layout";
-//    }
-
     @GetMapping("/new")
     public String showNewCategoryForm(Model model) {
         Category category = new Category();
@@ -70,7 +53,8 @@ public class AdminCategoryController {
     }
 
     @PostMapping
-    public String saveCategory(@ModelAttribute("category") Category category, Model model) {
+    public String saveCategory(@ModelAttribute("category") Category category, Model model,
+                               RedirectAttributes redirectAttributes) {
         boolean isDuplicate = categoryService.checkDuplicateCategory(category);
 
         if (isDuplicate) {
@@ -80,6 +64,7 @@ public class AdminCategoryController {
         }
 
         categoryService.saveCategory(category);
+        redirectAttributes.addFlashAttribute("notification", "Category added successfully!");
         return "redirect:/admin/categories";
     }
 
@@ -96,7 +81,8 @@ public class AdminCategoryController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateCategory(@PathVariable("id") int id, @ModelAttribute("category") Category category, Model model) {
+    public String updateCategory(@PathVariable("id") int id, @ModelAttribute("category") Category category, Model model,
+                                 RedirectAttributes redirectAttributes) {
         Optional<Category> existingCategory = categoryService.getCategoryById(id);
         if (existingCategory.isPresent()) {
             String existingCategoryName = existingCategory.get().getCategoryName();
@@ -111,6 +97,7 @@ public class AdminCategoryController {
             }
             category.setCategoryId(id);
             categoryService.saveCategory(category);
+            redirectAttributes.addFlashAttribute("notification", "Category updated successfully!");
             return "redirect:/admin/categories";
         } else {
             return "redirect:/admin/categories";
@@ -118,8 +105,9 @@ public class AdminCategoryController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable("id") int id) {
+    public String deleteCategory(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         categoryService.deleteCategoryById(id);
+        redirectAttributes.addFlashAttribute("notification", "Category deleted successfully!");
         return "redirect:/admin/categories";
     }
 }

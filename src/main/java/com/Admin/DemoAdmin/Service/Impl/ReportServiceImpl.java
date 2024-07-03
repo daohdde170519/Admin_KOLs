@@ -4,7 +4,9 @@
  */
 package com.Admin.DemoAdmin.Service.Impl;
 
+import com.Admin.DemoAdmin.Entity.Comment;
 import com.Admin.DemoAdmin.Entity.Report;
+import com.Admin.DemoAdmin.Repository.CommentRepository;
 import com.Admin.DemoAdmin.Repository.ReportRepository;
 import com.Admin.DemoAdmin.Service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ import org.springframework.stereotype.Service;
 public class ReportServiceImpl implements ReportService{
     @Autowired
     private ReportRepository reportRepository;
+    
+    @Autowired
+    private CommentRepository commentRepository;
     @Override
     public Page<Report> findPaginated(Pageable pageable) {
       return  reportRepository.findAll(pageable);
@@ -36,5 +41,15 @@ public class ReportServiceImpl implements ReportService{
             reportRepository.deleteById(reportId);
         }
     }
-    
+
+    @Override
+    public void saveReport(Report report) {
+        // Ensure the comment is saved first
+        Comment comment = report.getReportedComment();
+        if (comment != null && comment.getCommentId() == null) {
+            commentRepository.save(comment);
+        }
+        // Now save the report
+        reportRepository.save(report);
+      }
 }

@@ -57,7 +57,7 @@
         <label for="word">Word:</label>
         <input type="text" id="word" th:field="*{word}" required><br>
         <label for="violationLevel">Violation Level:</label>
-        <input type="number" id="violationLevel" th:field="*{violationLevel}" required><br>
+        <input type="number" id="violationLevel" th:field="*{violationLevel}" required min="1" max="2"><br>
         <button type="submit">Save</button>
     </form>
     <div th:if="${duplicateMessage != null}">

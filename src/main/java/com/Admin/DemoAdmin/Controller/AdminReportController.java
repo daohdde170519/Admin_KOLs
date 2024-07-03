@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -103,28 +104,27 @@ public class AdminReportController {
     @PostMapping("/submit1")
     public String submitReport(@ModelAttribute("report") Report report, Model model) {
         report.setCreateDate(new Date());
-        // Save the report in the database
-        reportRepository.save(report);
 
-        // Get the reported comment
-        Comment reportedComment = commentRepository.findById(report.getReportedComment().getCommentId()).orElse(null);
-        if (reportedComment == null) {
-            model.addAttribute("message", "Comment not found");
-            return "reportForm";
+        // Check if reportedComment is set
+        if (report.getReportedComment() != null && report.getReportedComment().getCommentId() != null) {
+            // Get the reported comment
+            Comment reportedComment = commentRepository.findById(report.getReportedComment().getCommentId()).orElse(null);
+                // Check for violation words
+                violationCheckService.checkCommentForViolations(reportedComment);
         }
 
-        // Check for violation words
-        violationCheckService.checkCommentForViolations(reportedComment);
+        // Save the report in the database
+        reportService.saveReport(report);
         return "reportForm";
     }
     
     @PostMapping("/delete/{id}")
-    public String deleteReport(@PathVariable("id") int reportId, Model model) {
+    public String deleteReport(@PathVariable("id") int reportId, Model model, RedirectAttributes redirectAttributes) {
         try {
             reportService.deleteReportById(reportId);
-            model.addAttribute("message", "Report deleted successfully");
+            redirectAttributes.addFlashAttribute("notification", "Report deleted successfully");
         } catch(Exception ex){
-            model.addAttribute("message", "Report deleted unSuccessfully");
+            redirectAttributes.addFlashAttribute("notification", "Report deleted unSuccessfully");
         }
         return "redirect:/admin/reports"; // Redirect to the list of reports
     }

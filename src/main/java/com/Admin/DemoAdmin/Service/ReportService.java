@@ -18,4 +18,5 @@ public interface ReportService {
     Page<Report> findPaginated(Pageable pageable);
     Page<Report> searchCategories(String keyword, Pageable pageable);
     void deleteReportById(int reportId);
+    void saveReport(Report report);
 }
