@@ -33,7 +33,6 @@ public class AdminListUsersController {
     private ProfileMapper profileMapper;
     
     
-    // Hiển thị Danh sách theo phân trang
     @GetMapping("/list_users")
     public String listUsers(Model model,
             @RequestParam("page") Optional<Integer> page,
@@ -41,30 +40,37 @@ public class AdminListUsersController {
         int currentPage = page.orElse(1);
         int pageSize = 10;
         Page<UserDTO> userPage;
+        String processedKeyword = keyword != null ? keyword.trim() : "";
 
-        if (keyword != null && !keyword.isEmpty()) {
+        if (!processedKeyword.isEmpty()) {
             Gender gender = null;
+            boolean isBanKeyword = processedKeyword.equalsIgnoreCase("ban");
+            boolean isUnbanKeyword = processedKeyword.equalsIgnoreCase("unban");
 
-            // Check if keyword contains specific filter keywords
-            if (keyword.toLowerCase().contains("unban")) {
-                keyword = keyword.replace("unban", "").trim(); // Remove 'unban' keyword
-                gender = Gender.MALE; // Set gender to filter with unban users (example)
-                userPage = userService.searchUsersWithUnBan(keyword, gender, PageRequest.of(currentPage - 1, pageSize));
-            } else if (keyword.toLowerCase().contains("ban")) {
-                keyword = keyword.replace("ban", "").trim(); // Remove 'ban' keyword
-                gender = Gender.FEMALE; // Set gender to filter with ban users (example)
-                userPage = userService.searchUsersWithBan(keyword, gender, PageRequest.of(currentPage - 1, pageSize));
+            // Adjust keyword if it contains 'ban' or 'unban'
+            if (isBanKeyword) {
+                processedKeyword = processedKeyword.replaceAll("(?i)ban", "").trim();
+            } else if (isUnbanKeyword) {
+                processedKeyword = processedKeyword.replaceAll("(?i)unban", "").trim();
+            }
+
+            // Determine the appropriate search method
+            if (isBanKeyword) {
+                userPage = userService.searchUsersWithBan(processedKeyword, gender, PageRequest.of(currentPage - 1, pageSize));
+            } else if (isUnbanKeyword) {
+                userPage = userService.searchUsersWithUnBan(processedKeyword, gender, PageRequest.of(currentPage - 1, pageSize));
             } else {
-                // Check if keyword is directly a gender value
+                // Check if the processedKeyword is directly a gender value
                 try {
-                    gender = Gender.valueOf(keyword.toUpperCase());
-                    userPage = userService.searchUsers(keyword, gender, PageRequest.of(currentPage - 1, pageSize));
+                    gender = Gender.valueOf(processedKeyword.toUpperCase());
+                    userPage = userService.searchUsers(processedKeyword, gender, PageRequest.of(currentPage - 1, pageSize));
                 } catch (IllegalArgumentException e) {
                     // If not a valid enum value, treat it as a regular search keyword
-                    userPage = userService.searchUsers(keyword, null, PageRequest.of(currentPage - 1, pageSize));
+                    userPage = userService.searchUsers(processedKeyword, null, PageRequest.of(currentPage - 1, pageSize));
                 }
             }
-            model.addAttribute("keyword", keyword);
+
+            model.addAttribute("keyword", keyword); // Original keyword for display
         } else {
             userPage = userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         }
@@ -77,8 +83,6 @@ public class AdminListUsersController {
 
         return "admin-layout";
     }
-
-
 
     
 //    //Hiển thị thông tin search theo phân trang

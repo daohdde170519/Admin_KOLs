@@ -134,11 +134,28 @@ public class AdminKolController {
         String body = "Dear " + username + ",\n\nYour KOL account has been created.\n\nUsername: " + username + "\nPassword: " + password + "\n\nPlease change your password after logging in for the first time.\n\nBest regards,\nAdmin Team";
         emailService.sendEmail(email, subject, body);
     }
-    
+    private void sendRejectionEmail(String email, String username) {
+        String subject = "KOL Registration Rejected";
+        String body = "Dear " + username + ",\n\nWe regret to inform you that your request to become a KOL has been rejected.\n\nBest regards,\nAdmin Team";
+        emailService.sendEmail(email, subject, body);
+    }
+
     @PostMapping("/deleteKol")
     public String deleteKol(@RequestParam("kolId") Long kolId, RedirectAttributes redirectAttributes) {
-        kolRegistrationService.deleteRegistration(kolId);
-        redirectAttributes.addFlashAttribute("message", "KOL deleted successfully.");
+        // Retrieve the KOL registration details before deleting
+        Optional<KolRegistration> kolRegistration = kolRegistrationService.getRegistrationById(kolId);
+
+        if (kolRegistration != null) {
+            // Send rejection email
+            sendRejectionEmail(kolRegistration.get().getEmail(), kolRegistration.get().getName());
+
+            // Delete the registration
+            kolRegistrationService.deleteRegistration(kolId);
+            redirectAttributes.addFlashAttribute("message", "KOL deleted successfully");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "KOL registration not found.");
+        }
+
         return "redirect:/admin/kolList";
     }
 }

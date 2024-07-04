@@ -4,6 +4,8 @@
  */
 package com.Admin.DemoAdmin.Controller;
 
+import com.Admin.DemoAdmin.DTOs.CategoryCountDTO;
+import com.Admin.DemoAdmin.Service.ProfileCategoryService;
 import com.Admin.DemoAdmin.Service.TransactionHistoryService;
 import com.Admin.DemoAdmin.Service.UserService;
 import java.util.HashMap;
@@ -33,6 +35,9 @@ public class AdminHome {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ProfileCategoryService profileCategoryService;
+    
     @GetMapping
     public String getAdminHome(Model model) {
         int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
@@ -64,6 +69,14 @@ public class AdminHome {
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("year", year);
         responseData.put("userCounts", userCounts);
+        return ResponseEntity.ok(responseData);
+    }
+    
+    @PostMapping("/categoryCount")
+    public ResponseEntity<?> showCategoryCount() {
+        List<CategoryCountDTO> categoryCounts = profileCategoryService.getCategoryCounts();
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("categoryCounts", categoryCounts);
         return ResponseEntity.ok(responseData);
     }
 }

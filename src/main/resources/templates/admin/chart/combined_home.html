@@ -73,6 +73,19 @@
             width: 100% !important;
             height: auto !important;
         }
+        .category-chart-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .category-chart-box {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+        }
     </style>
 </head>
 <body>
@@ -109,15 +122,21 @@
             <canvas id="userChart"></canvas>
         </div>
     </div>
-
+    
+    <div class="category-chart-container">
+        <div class="category-chart-box">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
     <script>
         $(document).ready(function() {
             var currentYear = /*[[${currentYear}]]*/ 2024; // Gán giá trị năm hiện tại từ server-side
             $("#paymentYear").val(currentYear); // Đặt năm hiện tại làm mặc định trong select box
             $("#userYear").val(currentYear); // Đặt năm hiện tại làm mặc định trong select box
-            
+        
             loadPaymentChartData(currentYear);
             loadUserChartData(currentYear);
+            loadCategoryChartData();
 
             function loadPaymentChartData(year) {
                 $.ajax({
@@ -125,8 +144,6 @@
                     type: "POST",
                     data: { year: year },
                     success: function(response) {
-                        console.log("Received payment response: ", response);
-
                         var year = response.year;
                         var totalPayments = response.totalPayments;
 
@@ -175,8 +192,6 @@
                     type: "POST",
                     data: { year: year },
                     success: function(response) {
-                        console.log("Received user count response: ", response);
-
                         var year = response.year;
                         var userCounts = response.userCounts;
 
@@ -197,12 +212,12 @@
                             data: {
                                 labels: labels,
                                 datasets: [{
-                                    label: 'User Count Per Month in ' + year,
-                                    data: userCounts,
-                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                    borderColor: 'rgba(54, 162, 235, 1)',
-                                    borderWidth: 1
-                                }]
+                                        label: 'User Count Per Month in ' + year,
+                                        data: userCounts,
+                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                        borderWidth: 1
+                                    }]
                             },
                             options: {
                                 scales: {
@@ -213,20 +228,73 @@
                             }
                         });
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error("Error: " + error);
                     }
                 });
             }
 
-            $("#paymentYearForm").on("submit", function(event) {
-                event.preventDefault(); // Ngăn chặn chuyển hướng trang
+            function loadCategoryChartData() {
+                $.ajax({
+                    url: "/admin/home/categoryCount",
+                    type: "POST",
+                    success: function (response) {
+                        var categoryCounts = response.categoryCounts;
+
+                        if (!categoryCounts || categoryCounts.length === 0) {
+                            console.error("No category count data received.");
+                            return;
+                        }
+
+                        var labels = categoryCounts.map(c => c.categoryName);
+                        var data = categoryCounts.map(c => c.count);
+                        var backgroundColors = labels.map((_, i) => `hsl(${i * 360 / labels.length}, 70%, 50%)`);
+
+                        var ctx = document.getElementById('categoryChart').getContext('2d');
+
+                        if (window.categoryChart instanceof Chart) {
+                            window.categoryChart.destroy();
+                        }
+
+                        window.categoryChart = new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                        label: 'Category Count',
+                                        data: data,
+                                        backgroundColor: backgroundColors,
+                                        hoverOffset: 4
+                                    }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'top'
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Category Count'
+                                    }
+                                }
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error: " + error);
+                    }
+                });
+            }
+
+            $("#paymentYearForm").on("submit", function (event) {
+                event.preventDefault();
                 var year = $("#paymentYear").val();
                 loadPaymentChartData(year);
             });
 
-            $("#userYearForm").on("submit", function(event) {
-                event.preventDefault(); // Ngăn chặn chuyển hướng trang
+            $("#userYearForm").on("submit", function (event) {
+                event.preventDefault();
                 var year = $("#userYear").val();
                 loadUserChartData(year);
             });

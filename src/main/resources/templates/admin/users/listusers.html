@@ -45,12 +45,13 @@
                                 th:data-action="${user.banAction == 'Ban' ? 'ban' : 'unban'}" 
                                 th:text="${user.banAction}">
                         </button>
-                    </div>
+                    
                     
                     <!-- Button to view -->
                     <form th:action="@{'/admin/users/view/' + ${user.id}}" method="GET">
                         <button type="submit">View</button>
                     </form>
+                    </div>
                 </td>
             </tr>
         </tbody>

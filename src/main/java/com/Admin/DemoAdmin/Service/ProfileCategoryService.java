@@ -4,16 +4,15 @@
  */
 package com.Admin.DemoAdmin.Service;
 
+import com.Admin.DemoAdmin.DTOs.CategoryCountDTO;
+import java.util.List;
+import org.springframework.stereotype.Service;
+
 /**
  *
  * @author DAO
  */
-import com.Admin.DemoAdmin.Entity.Notification;
-import java.util.List;
-import org.springframework.stereotype.Service;
 @Service
-public interface NotificationService {
-    Notification createNotification(Notification notification);
-    List<Notification> getAllNotifications();
+public interface ProfileCategoryService {
+    List<CategoryCountDTO> getCategoryCounts();
 }
-
