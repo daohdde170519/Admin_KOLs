@@ -118,7 +118,7 @@
                 <td th:text="${#dates.format(report.createDate, 'yyyy-MM-dd HH:mm')}"></td>                    
                 <td th:text="${report.reportUser.username}"></td>
                 <td th:text="${report.reportedUser.username}"></td>
-                <td th:text="${report.reportedComment.commentContent}"></td>
+                <td th:text="${report.reportedComment != null ? report.reportedComment.commentContent : ''}"></td>
                 <td>
                     <form th:action="@{/admin/reports/sendNotification}" method="post" class="d-inline">
                         <input type="hidden" name="userId" th:value="${report.reportedUser.userId}" />

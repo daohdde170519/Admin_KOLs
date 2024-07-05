@@ -99,25 +99,33 @@ public class AdminReportController {
     @GetMapping("/submit")
     public String showReportForm(Model model) {
         model.addAttribute("report", new Report());
-        return "reportForm";
+        return "reportUserAccount";
     }
 
     @PostMapping("/submit1")
     public String submitReport(@ModelAttribute("report") Report report, Model model) {
         report.setCreateDate(new Date());
 
-        // Check if reportedComment is set
+        // Check if reportedComment is set and has a valid comment ID
         if (report.getReportedComment() != null && report.getReportedComment().getCommentId() != null) {
             // Get the reported comment
             Comment reportedComment = commentRepository.findById(report.getReportedComment().getCommentId()).orElse(null);
+            if (reportedComment != null) {
                 // Check for violation words
                 violationCheckService.checkCommentForViolations(reportedComment);
+                report.setReportedComment(reportedComment); // Ensure the report is set with the valid comment
+            } else {
+                report.setReportedComment(null); // If the comment is not found, set it to null
+            }
+        } else {
+            report.setReportedComment(null); // Ensure reportedComment is null if not set or invalid
         }
 
         // Save the report in the database
         reportService.saveReport(report);
-        return "reportForm";
+        return "redirect:/admin/reports"; // Redirect to the list of reports after saving
     }
+
     
     @PostMapping("/delete/{id}")
     public String deleteReport(@PathVariable("id") int reportId, Model model, RedirectAttributes redirectAttributes) {
