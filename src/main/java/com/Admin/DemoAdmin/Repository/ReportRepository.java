@@ -5,6 +5,7 @@
 package com.Admin.DemoAdmin.Repository;
 
 import com.Admin.DemoAdmin.Entity.Report;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,5 +26,7 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
             "r.reportUser.username LIKE %?1% OR " +
             "r.reportedUser.username LIKE %?1%")
     Page<Report> searchReports(String keyword, Pageable pageable);
+    
+    List<Report> findByReportedUserUserId(int userId);
 }
 

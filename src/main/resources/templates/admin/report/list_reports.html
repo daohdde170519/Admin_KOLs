@@ -121,6 +121,7 @@
                 <td th:text="${report.reportedComment != null ? report.reportedComment.commentContent : ''}"></td>
                 <td>
                     <form th:action="@{/admin/reports/sendNotification}" method="post" class="d-inline">
+                        <input type="hidden" name="reportId" th:value="${report.reportId}" />
                         <input type="hidden" name="userId" th:value="${report.reportedUser.userId}" />
                         <div class="input-group">
                             <textarea name="message" class="form-control" placeholder="Enter notification message" required></textarea>

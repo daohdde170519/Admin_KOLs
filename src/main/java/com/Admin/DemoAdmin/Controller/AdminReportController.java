@@ -83,7 +83,7 @@ public class AdminReportController {
     }  
     
         @PostMapping("/sendNotification")
-    public String sendNotification(@RequestParam("userId") int userId, @RequestParam("message") String message, RedirectAttributes redirectAttributes) {
+    public String sendNotification(@RequestParam("userId") int userId, @RequestParam("reportId") int reportId, @RequestParam("message") String message, RedirectAttributes redirectAttributes) {
         // Tạo đối tượng Notification mới
         Notification notification = new Notification();
         notification.setUser(userService.findById(userId));
@@ -92,6 +92,16 @@ public class AdminReportController {
         notification.setType(TypeNotification.ACCOUNT);
         // Lưu thông báo
          notificationService.createNotification(notification);
+         
+        Optional<Report> optionalReport = reportRepository.findById(reportId);
+            if (optionalReport.isPresent()) {
+                Report report = optionalReport.get();
+                if (report.getReportedComment() != null) {
+                    Comment reportedComment = report.getReportedComment();
+                    reportedComment.setIsViolation(true); 
+                    commentRepository.save(reportedComment); // Save the updated comment
+                }
+            }
          redirectAttributes.addFlashAttribute("notification", "Send notfitication message successfully");
         return "redirect:/admin/reports"; // Điều hướng lại trang danh sách báo cáo sau khi gửi thông báo
     }

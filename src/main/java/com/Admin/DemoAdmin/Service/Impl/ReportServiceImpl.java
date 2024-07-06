@@ -9,6 +9,7 @@ import com.Admin.DemoAdmin.Entity.Report;
 import com.Admin.DemoAdmin.Repository.CommentRepository;
 import com.Admin.DemoAdmin.Repository.ReportRepository;
 import com.Admin.DemoAdmin.Service.ReportService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,4 +53,11 @@ public class ReportServiceImpl implements ReportService{
         // Now save the report
         reportRepository.save(report);
       }
+
+    @Override
+    public List<Report> findByReportedUserId(int userId) {
+        return reportRepository.findByReportedUserUserId(userId);
+    }
+
+
 }
